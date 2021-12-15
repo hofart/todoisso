@@ -5,31 +5,30 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>To Do Isso</title>
+  <title>TodoIsso -- Remember all your tasks every day without hassle.</title>
 
   <link rel="stylesheet" href="/src/styles/reset.css">
   <link rel="stylesheet" href="/src/styles/styles.css">
 </head>
 
 <body>
-
-  <div id="card">
+  <div id="view_content">
     <header>
-      <h1>To Do Isso</h1>
+      <h1>TodoIsso</h1>
     </header>
 
     <main>
-      <div class="list-collection">
-        <ul id="todolist"></ul>
+      <div class="list_holder">
+        <ul id="items"></ul>
       </div>
 
-      <div class="register-new-task">
-        <form id="formToDo">
-          <input type="text" id="title" placeholder="Title">
-          <input type="text" id="newTask" placeholder="Insert New Task">
+      <div class="manager_content">
+        <form id="task_editor">
+          <input type="text" class="task_editor__input_fields" name="title" placeholder="Title">
+          <input type="text" class="task_editor__input_fields" name="content" placeholder="Insert New Task">
         </form>
         
-        <a id="btn-add-task">Adicionar nova tarefa</a>
+        <button class="btn btn__primary" id="insert_task">Adicionar nova tarefa</button>
       </div>
     </main>
 

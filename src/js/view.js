@@ -4,48 +4,51 @@ export default class View {
   #todolist = []
   #id = 1
 
-  #ul = document.getElementById('todolist')
-  #input = document.getElementById('addNewTask')
+  #items = document.getElementById('items')
+  #form = document.getElementById('task_editor')
 
-  #btnAdd = document.getElementById('btn-add-task')
-  #btnDelete = document.querySelectorAll('.btn-delete')
+  #btnAdd = document.getElementById('insert_task')
+  #btnDelete = document.querySelectorAll('.delete_task')
 
   addNewTask() {
     this.#btnAdd.addEventListener('click', () => {
-      const obj = {
-        name: this.#input.value,
+      const { title, content } = this.#form
+
+      const values = {
+        title: title.value,
+        content: content.value,
         id: this.#id
       }
-
+      
       this.#id++
-      this.#todolist.push(obj)
+      this.#todolist.push(values)
 
       console.log(this.#todolist)
 
       //clear input after submit
-      this.#input.value = ''
+      title.value = ''
+      content.value = ''
       //show div only if it has content
-      this.#todolist ? this.#ul.style.display = 'block' : this.#ul.style.display = 'none'
+      this.#todolist ? this.#items.style.display = 'block' : this.#items.style.display = 'none'
 
       //calling methods
-      this.createList(this.#todolist, this.#ul)
+      this.createList(this.#todolist, this.#items)
     })  
   }
 
   createList(list, ul) {
     if(list) {
       const li = this.#todolist.map(item => `
-        <li class="wrapper" id="item-${item.id}">
-          <div class="wrapper-content">
-            <div class="item-checkbox">
-              <input type="checkbox">
-            </div>
-            <div class="item-content">
-              <p>${item.name}</p>
+        <li class="task_list_item" id="task-${item.id}">
+          <div class="task_list_item__checkbox">
+            <input type="checkbox" class="task_list_item__input">
+            <div class="task_list_item__checkbox--body">
+              <p class="task_list_item__input--title">${item.title}</p>
+              <p class="task_list_item__input--description">${item.content}</p>
             </div>
           </div>
-          <div class="item-trash">
-            <a href="#!" class="delete">
+          <div class="task_list_item__delete">
+            <a href="#!" class="delete_task">
               <i class="far fa-trash-alt"></i>
             </a>
           </div>
@@ -56,18 +59,10 @@ export default class View {
     }
   }
 
-  deleteTask() {
-    this.#ul.addEventListener('click', e => {
-      if(e.target && e.target.classList.contains('btn-delete')) {
-
-        //TODO: remove li and value from array
-        console.log(e.target)
-      }
-    })
-  }
+  // deleteTask() {}
   
   _init() {
     this.addNewTask()
-    this.deleteTask()
+    // this.deleteTask()
   }
 }

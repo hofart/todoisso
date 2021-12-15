@@ -13,7 +13,7 @@ body {
   height: 100vh;
 }
 
-#card {
+#view_content {
   border: 1px solid black;
   width: 500px;
   aspect-ratio: 1;
@@ -23,17 +23,20 @@ body {
   justify-content: space-between;
 }
 
-#todolist {
+#items {
   background-color: red;
 }
 
-/* List of todo */
-.wrapper {
+#items .task_list_item {
   display: flex;
-  align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
-.wrapper .wrapper-content {
+#items .task_list_item .task_list_item__checkbox {
   display: flex;
+}
+
+#items .task_list_item .task_list_item__checkbox--body {
+  display: flex;
+  flex-direction: column;
 }
