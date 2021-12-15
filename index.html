@@ -19,10 +19,18 @@
     </header>
 
     <main>
-      <ul id="todolist"></ul>
+      <div class="list-collection">
+        <ul id="todolist"></ul>
+      </div>
 
-      <input type="text" id="addNewTask" placeholder="Insert New Task">
-      <a id="btn-add-task">Adicionar nova tarefa</a>
+      <div class="register-new-task">
+        <form id="formToDo">
+          <input type="text" id="title" placeholder="Title">
+          <input type="text" id="newTask" placeholder="Insert New Task">
+        </form>
+        
+        <a id="btn-add-task">Adicionar nova tarefa</a>
+      </div>
     </main>
 
     <footer>
@@ -30,6 +38,7 @@
     </footer>
   </div>
 
+  <script defer src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" integrity="sha384-rOA1PnstxnOBLzCLMcre8ybwbTmemjzdNlILg8O7z1lUkLXozs4DHonlDtnE7fpc" crossorigin="anonymous"></script>
   <script type="module" src="/src/js/index.js"></script>
 </body>
 

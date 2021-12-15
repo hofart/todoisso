@@ -2,6 +2,7 @@ export default class View {
   constructor() {}
 
   #todolist = []
+  #id = 1
 
   #ul = document.getElementById('todolist')
   #input = document.getElementById('addNewTask')
@@ -11,13 +12,20 @@ export default class View {
 
   addNewTask() {
     this.#btnAdd.addEventListener('click', () => {
-      const value = this.#input.value
-      this.#todolist.push(value)
+      const obj = {
+        name: this.#input.value,
+        id: this.#id
+      }
+
+      this.#id++
+      this.#todolist.push(obj)
+
+      console.log(this.#todolist)
 
       //clear input after submit
       this.#input.value = ''
       //show div only if it has content
-      this.#todolist ? this.#ul.display = 'block' : this.#ul.display = 'none'
+      this.#todolist ? this.#ul.style.display = 'block' : this.#ul.style.display = 'none'
 
       //calling methods
       this.createList(this.#todolist, this.#ul)
@@ -27,15 +35,19 @@ export default class View {
   createList(list, ul) {
     if(list) {
       const li = this.#todolist.map(item => `
-        <li class="wrapper-list">
-          <div class="check-item">
-            <input type="checkbox">
-            ${item}
-          </div>
-          <div class="delete-item">
-            <a class="btn-delete">
-              x
+        <li class="wrapper" id="item-${item.id}">
+          <div class="wrapper-content">
+            <div class="item-checkbox">
+              <input type="checkbox">
             </div>
+            <div class="item-content">
+              <p>${item.name}</p>
+            </div>
+          </div>
+          <div class="item-trash">
+            <a href="#!" class="delete">
+              <i class="far fa-trash-alt"></i>
+            </a>
           </div>
         </li>
       `).join('')

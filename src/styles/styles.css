@@ -27,8 +27,13 @@ body {
   background-color: red;
 }
 
-.wrapper-list {
+/* List of todo */
+.wrapper {
   display: flex;
   align-items: center;
   justify-content: space-around;
+}
+
+.wrapper .wrapper-content {
+  display: flex;
 }
