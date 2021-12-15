@@ -6,6 +6,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>To Do Isso</title>
+
+  <link rel="stylesheet" href="/src/styles/reset.css">
+  <link rel="stylesheet" href="/src/styles/styles.css">
 </head>
 
 <body>
@@ -16,8 +19,10 @@
     </header>
 
     <main>
+      <ul id="todolist"></ul>
+
       <input type="text" id="addNewTask" placeholder="Insert New Task">
-      <a href="#!" class="btn-add-task">Adicionar nova tarefa</a>
+      <a id="btn-add-task">Adicionar nova tarefa</a>
     </main>
 
     <footer>
@@ -25,7 +30,7 @@
     </footer>
   </div>
 
-  <script type="module" src="./src/js/index.js"></script>
+  <script type="module" src="/src/js/index.js"></script>
 </body>
 
 </html>

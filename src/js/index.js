@@ -1,4 +1,4 @@
-import View from './view'
+import View from './view.js'
 
 const view = new View()
 view._init()
