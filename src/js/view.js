@@ -63,14 +63,21 @@ export default class View {
     const nodes = this.#items.querySelectorAll('.delete_task')
 
     nodes.forEach(e => e.addEventListener('click', () => {
+      const li = e.parentNode
       const data = e.getAttribute('data-id')
       const obj = this.#todolist.find(el => el.id == data)
 
-      if(this.#todolist.indexOf(obj)) {
-        this.#todolist.splice(this.#todolist.findIndex(el => el.id == data), 1)
-
+      if(this.#todolist.length == 1) {
+        this.#todolist.shift()
         console.log(this.#todolist)
+      } else {
+        if(this.#todolist.indexOf(obj)) {
+          this.#todolist.splice(this.#todolist.findIndex(el => el.id == data), 1)
+          console.log(this.#todolist)
+        }
       }
+
+      li.parentNode.remove()
     }))
   }
   
