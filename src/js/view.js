@@ -14,20 +14,20 @@ export default class View {
     this.#btnAdd.addEventListener('click', () => {
       const { title, content } = this.#form
 
-      const values = {
-        title: title.value,
-        content: content.value,
-        id: this.#id
-      }
+      if(!title.value.trim() || !content.value.trim()) return false
 
       //increment id and push value to array
       this.#id++
-      this.#todolist.push(values)
+
+      this.#todolist.push({
+        title: title.value,
+        content: content.value,
+        id: this.#id
+      })
 
       console.log(this.#todolist)
       //clear input after submit
-      title.value = ''
-      content.value = ''
+      this.#form.reset()
       //show div only if it has content
       this.#todolist ? this.#items.style.display = 'block' : this.#items.style.display = 'none'
       //calling methods
@@ -65,15 +65,8 @@ export default class View {
     nodes.forEach(e => e.addEventListener('click', () => {
       const li = e.parentNode
       const data = e.getAttribute('data-id')
-      const obj = this.#todolist.find(el => el.id == data)
 
-      if(this.#todolist.length == 1) {
-        this.#todolist.shift()
-      } else {
-        if(this.#todolist.indexOf(obj)) {
-          this.#todolist.splice(this.#todolist.findIndex(el => el.id == data), 1)
-        }
-      }
+      this.#todolist.splice(this.#todolist.findIndex(el => el.id == data), 1)
 
       li.parentNode.remove()
     }))
