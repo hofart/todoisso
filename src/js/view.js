@@ -72,6 +72,8 @@ export default class View {
           text-decoration: none;
           font-style: none;
         `
+
+        // if input:checked set some styles
         if(e.checked) {
           e.parentNode.lastElementChild.firstElementChild.style = styles
           e.parentNode.lastElementChild.lastElementChild.style = styles
@@ -87,9 +89,13 @@ export default class View {
     if(list) {
       const nodes = this.#items.querySelectorAll('.delete_task')  
 
+      // add envent click on all delete button
       nodes.forEach(e => e.addEventListener('click', () => {
+        // back to father element and get data-attr
         const li = e.parentNode
         const data = e.getAttribute('data-id')
+
+        //find element in array and remove, remove li also
         this.#todolist.splice(this.#todolist.findIndex(el => el.id == data), 1)
         li.parentNode.remove()
       }))
