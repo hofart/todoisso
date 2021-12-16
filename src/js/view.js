@@ -69,11 +69,9 @@ export default class View {
 
       if(this.#todolist.length == 1) {
         this.#todolist.shift()
-        console.log(this.#todolist)
       } else {
         if(this.#todolist.indexOf(obj)) {
           this.#todolist.splice(this.#todolist.findIndex(el => el.id == data), 1)
-          console.log(this.#todolist)
         }
       }
 
