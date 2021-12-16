@@ -7,13 +7,13 @@ export default class View {
   #items = document.getElementById('items')
   #li = document.querySelectorAll('task_list_item')
   #form = document.getElementById('task_editor')
-
   #btnAdd = document.getElementById('insert_task')
 
   addNewTask() {
     this.#btnAdd.addEventListener('click', () => {
       const { title, content } = this.#form
 
+      // if any input field is empty, cant submit
       if(!title.value.trim() || !content.value.trim()) return false
 
       //increment id and push value to array
@@ -25,14 +25,14 @@ export default class View {
         id: this.#id
       })
 
-      console.log(this.#todolist)
       //clear input after submit
       this.#form.reset()
       //show div only if it has content
       this.#todolist ? this.#items.style.display = 'block' : this.#items.style.display = 'none'
       //calling methods
       this.createList(this.#todolist, this.#items)
-      if(this.#todolist) this.deleteTask()
+      this.deleteTask(this.#todolist)
+      this.checkTask(this.#todolist)
     })  
   }
 
@@ -59,17 +59,41 @@ export default class View {
     }
   }
 
-  deleteTask() {
-    const nodes = this.#items.querySelectorAll('.delete_task')
+  checkTask(list) {
+    if(list) {
+      const nodes = this.#items.querySelectorAll('.task_list_item__input')
 
-    nodes.forEach(e => e.addEventListener('click', () => {
-      const li = e.parentNode
-      const data = e.getAttribute('data-id')
+      nodes.forEach(e => e.addEventListener('click', () => {
+        let styles = `
+          text-decoration: line-through;
+          font-style: italic;
+        `
+        let noStyles = `
+          text-decoration: none;
+          font-style: none;
+        `
+        if(e.checked) {
+          e.parentNode.lastElementChild.firstElementChild.style = styles
+          e.parentNode.lastElementChild.lastElementChild.style = styles
+        } else {
+          e.parentNode.lastElementChild.firstElementChild.style = noStyles
+          e.parentNode.lastElementChild.lastElementChild.style = noStyles
+        }
+      }))
+    }
+  }
 
-      this.#todolist.splice(this.#todolist.findIndex(el => el.id == data), 1)
+  deleteTask(list) {
+    if(list) {
+      const nodes = this.#items.querySelectorAll('.delete_task')  
 
-      li.parentNode.remove()
-    }))
+      nodes.forEach(e => e.addEventListener('click', () => {
+        const li = e.parentNode
+        const data = e.getAttribute('data-id')
+        this.#todolist.splice(this.#todolist.findIndex(el => el.id == data), 1)
+        li.parentNode.remove()
+      }))
+    }
   }
   
   _init() {
