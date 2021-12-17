@@ -5,7 +5,6 @@ export default class View {
   #id = Math.floor(Math.random() * 9999)
 
   #items = document.getElementById('items')
-  #li = document.querySelectorAll('task_list_item')
   #form = document.getElementById('task_editor')
   #btnAdd = document.getElementById('insert_task')
 
@@ -21,7 +20,7 @@ export default class View {
         title: title.value,
         content: content.value,
         id: this.#id,
-        done: 'false'
+        done: false
       })
 
       this.#form.reset()
@@ -42,7 +41,7 @@ export default class View {
     const li = this.#todolist.map(item => `
       <li class="task_list_item" id="task-${item.id}">
         <div class="task_list_item__checkbox">
-          <input type="checkbox" class="task_list_item__input" data-id="${item.id}" ${item.done == 'true' ? 'checked' : ''}>
+          <input type="checkbox" class="task_list_item__input" data-id="${item.id}" ${item.done ? 'checked' : ''}>
           <div class="task_list_item__checkbox--body">
             <p class="task_list_item__input--title">${item.title}</p>
             <p class="task_list_item__input--description">${item.content}</p>
@@ -65,7 +64,7 @@ export default class View {
     nodes.forEach(e => e.addEventListener('click', () => {
         const data = e.getAttribute('data-id')
         this.#todolist.findIndex(el => {
-          el.id == data && e.checked ? el.done = 'true' : el.done = 'false'
+          el.id == data && e.checked ? el.done = true : el.done = false
         })
     }))
   }
