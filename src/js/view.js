@@ -42,7 +42,7 @@ export default class View {
     const li = this.#todolist.map(item => `
       <li class="task_list_item" id="task-${item.id}">
         <div class="task_list_item__checkbox">
-          <input type="checkbox" class="task_list_item__input" data-id="${item.id}">
+          <input type="checkbox" class="task_list_item__input" data-id="${item.id}" ${item.done == 'true' ? 'checked' : ''}>
           <div class="task_list_item__checkbox--body">
             <p class="task_list_item__input--title">${item.title}</p>
             <p class="task_list_item__input--description">${item.content}</p>
