@@ -62,10 +62,8 @@ export default class View {
     const nodes = this.#items.querySelectorAll('.task_list_item__input')
 
     nodes.forEach(e => e.addEventListener('click', () => {
-        const data = e.getAttribute('data-id')
-        this.#todolist.findIndex(el => {
-          el.id == data && e.checked ? el.done = true : el.done = false
-        })
+      const data = e.getAttribute('data-id')
+      this.#todolist.findIndex(el => el.id == data && e.checked ? el.done = true : el.done = false)
     }))
   }
 
