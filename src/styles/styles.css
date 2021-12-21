@@ -4,8 +4,8 @@
   --black: #1f1f1f;
   --red: #d16767;
   --gray: #767676;
-  --l-orange: #f5dfbe;
   --l-black: #282828;
+  --l-gray: #363636;
   --d-gray: #282828;
   --d-black: #171717;
   --font: 'Urbanist', sans-serif;
@@ -31,33 +31,7 @@ a {
   text-decoration: none;
 }
 
-/* Header */
-header {
-  width: 100%;
-  height: auto;
-  display: grid;
-  grid-template-columns: 300px 1fr;
-  padding: 1rem 0;
-  background-color: var(--l-black);
-  box-shadow: rgba(20, 20, 20, 0.384) 0px 2px 8px 0px;
-}
-
-header .left_control {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 0 2rem;
-  font-size: 1rem;
-}
-
-header .right_control {
-  display: flex;
-  align-items: center;
-  justify-content: end;
-  padding: 0 2rem;
-}
-
-header a, p, h1, h2, h3, h4, h5, h6 {
+a, p, h1, h2, h3, h4, h5, h6 {
   color: white;
 }
 
@@ -69,27 +43,14 @@ h1 {
   color: var(--red);
 }
 
-/* Menu */
-.left_menu {
-  width: 300px;
-  height: calc(100vh - 49px);
-  padding: 2rem;
-  background-color: var(--d-gray);
-  position: fixed;
-  left: 0;
-  z-index: -1;
+.title-list {
+  color: var(--gray);
+  font-size: 1.1rem;
 }
 
-.left_menu .top_filters .top_filters__list .item_content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.left_menu .top_filters .top_filters__list .item_content .item_content__item_1 {
-  color: white;
-  display: flex;
-  gap: 10px;
+.done {
+  text-decoration: line-through;
+  font-style: italic;
 }
 
 /* Dates */
@@ -101,15 +62,14 @@ h1 {
 /* Editor */
 #view_content {
   background-color: var(--black);
-  margin-left: 364px;
-  height: calc(100vh - 49px);
-  padding: 2rem 3rem;
+  height: 100vh;
 }
 
 #view_content .editor {
   max-width: 650px;
   width: 100%;
   margin: 0 auto;
+  padding-top: 100px;
 }
 
 #items {
@@ -121,7 +81,7 @@ h1 {
   justify-content: space-between;
   padding: .5rem 0;
   margin: 1rem 0;
-  border-bottom: 1px solid var(--gray);
+  border-bottom: 1px solid var(--l-gray);
 }
 
 #items .task_list_item .task_list_item__checkbox {
@@ -189,14 +149,23 @@ h1 {
 #task_editor .task_editor__input_fields {
   padding: .5rem;
   border-radius: 4px;
-  border: 1px solid var(--black);
+  border: none;
   background-color: transparent;
+  color: var(--gray);
+}
+
+#task_editor .task_editor__input_fields:focus-visible {
+  background-color: transparent;
+}
+
+textarea { 
+  resize: none;
 }
 
 /* Buttons */
 .btn {
   border: none;
-  padding: 0.8rem 1rem;
+  padding: 0.5rem 1rem;
   color: white;
   letter-spacing: 1px;
   font-weight: 500;
@@ -204,15 +173,15 @@ h1 {
   cursor: pointer;
 }
 
-.btn__primary {
+.btn--primary {
   background-color: var(--red);
 }
 
-.btn__cancel {
+.btn--cancel {
   background-color: transparent;
   border: 1px solid var(--gray);
 }
 
-.btn__cancel:hover {
+.btn--cancel:hover {
   background-color: var(--gray);
 }

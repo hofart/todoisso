@@ -12,36 +12,11 @@
 </head>
 
 <body>
-  <header>
-    <div class="left_control">
-      <a href="#!" title="Menu"><i class="fas fa-bars"></i></a>
-    </div>
-
-    <div class="right_control"> 
-      <p>development with <span>❤</span> by M.Hofart</p>
-    </div>
-  </header>
-
-  <div id="left_menu" class="left_menu">
-    <ul class="top_filters">
-      <li class="top_filters__list">
-        <a href="#!" class="item_content">
-          <div class="item_content__item_1">
-            <i class="fas fa-list-alt"></i> 
-            <p>Qtd. Tasks</p>
-          </div>
-          <div class="item_content__item_2">
-            <span id="qtd_tasks"></span>
-          </div>
-        </a>
-      </li>
-    </ul>
-  </div>
-
   <main id="view_content">
     <div id="editor" class="editor">
       <div class="list_holder">
         <h1 id="title_tasks"></h1>
+
         <ul id="items"></ul>
       </div>
 
@@ -62,8 +37,8 @@
           <textarea class="task_editor__input_fields" name="content" placeholder="Description"></textarea>
         </form>
         
-        <button class="btn btn__primary" id="insert_task">Create Task</button>
-        <button class="btn btn__cancel" id="manager_content--cancel">Cancel</button>
+        <button class="btn btn--primary" id="insert_task">Create Task</button>
+        <button class="btn btn--cancel" id="manager_content--cancel">Cancel</button>
       </div>
     </div>
   </main>

@@ -7,7 +7,7 @@ export default class View {
   #items = document.getElementById('items')
   #form = document.getElementById('task_editor')
   #btnAdd = document.getElementById('insert_task')
-  #btnOpenForm = document.getElementById('open_manager_content')
+  #openManagerContent = document.getElementById('open_manager_content')
   #closeManagerContent = document.getElementById('manager_content--cancel')
   #managerContent = document.getElementById('manager_content')
 
@@ -49,7 +49,7 @@ export default class View {
         <div class="task_list_item__checkbox">
           <input type="checkbox" class="task_list_item__input" data-id="${item.id}" ${item.done ? 'checked' : ''}>
           <div class="task_list_item__checkbox--body">
-            <p class="task_list_item__input--title">${item.title}</p>
+            <p class="task_list_item__input--title title-list ${item.done ? 'done' : '' }">${item.title}</p>
             <p class="task_list_item__input--description">${item.content}</p>
           </div>
         </div>
@@ -70,6 +70,7 @@ export default class View {
     nodes.forEach(e => e.addEventListener('click', () => {
       const data = e.getAttribute('data-id')
       this.#todolist.findIndex(el => el.id == data && e.checked ? el.done = true : el.done = false)
+      e.checked ? e.parentNode.lastElementChild.firstElementChild.classList.add('done') : e.parentNode.lastElementChild.firstElementChild.classList.remove('done')
     }))
   }
 
@@ -92,12 +93,14 @@ export default class View {
   }
 
   toggleManagerContent() {
-    this.#btnOpenForm.addEventListener('click', () => {
-      this.#managerContent.style.display = 'block' 
+    this.#openManagerContent.addEventListener('click', () => {
+      this.#managerContent.style.display = 'block'
+      this.#openManagerContent.style.opacity = '0'
     })
 
     this.#closeManagerContent.addEventListener('click', () => {
       this.#managerContent.style.display = 'none'
+      this.#openManagerContent.style.opacity = '1'
     })
   }
   
@@ -105,6 +108,5 @@ export default class View {
     this.addNewTask()
     this.getDate()
     this.toggleManagerContent()
-    this.quantityTasks()
   }
 }
