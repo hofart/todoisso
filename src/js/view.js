@@ -7,6 +7,7 @@ export default class View {
   #items = document.getElementById('items')
   #form = document.getElementById('task_editor')
   #btnAdd = document.getElementById('insert_task')
+  #btnFilter = document.getElementById('filter')
   #openManagerContent = document.getElementById('open_manager_content')
   #closeManagerContent = document.getElementById('manager_content--cancel')
   #managerContent = document.getElementById('manager_content')
@@ -37,6 +38,7 @@ export default class View {
         this.createList(this.#items)
         this.deleteTask()
         this.doneOrUndone()
+        this.filter()
       } else {
         this.#items.style.display = 'none'
       }
@@ -53,11 +55,11 @@ export default class View {
             <p class="task_list_item__input--description">${item.content}</p>
           </div>
         </div>
-        <div class="task_list_item__delete">
+        <di class="task_list_item__delete">
           <a href="#!" class="delete_task" data-id="${item.id}">
             <i class="far fa-trash-alt"></i>
           </a>
-        </div>
+        </di
       </li>
     `).join('')
 
@@ -72,6 +74,14 @@ export default class View {
       this.#todolist.findIndex(el => el.id == data && e.checked ? el.done = true : el.done = false)
       e.checked ? e.parentNode.lastElementChild.firstElementChild.classList.add('done') : e.parentNode.lastElementChild.firstElementChild.classList.remove('done')
     }))
+  }
+
+  filter() {
+    this.#btnFilter.addEventListener('click', () => {
+      const nodes = this.#items.querySelectorAll('.task_list_item__input')
+      
+      nodes.forEach(e => e.checked ? e.parentNode.parentElement.style.display = 'flex' : e.parentNode.parentElement.style.display = 'none')
+    })
   }
 
   deleteTask() {

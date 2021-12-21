@@ -65,6 +65,12 @@ h1 {
   height: 100vh;
 }
 
+@media (max-width: 767px) {
+  #view_content {
+    padding: 1.5rem;
+  }
+}
+
 #view_content .editor {
   max-width: 650px;
   width: 100%;
@@ -115,6 +121,30 @@ h1 {
   opacity: 1;
 }
 
+.dropdown {
+  width: 150px;
+  aspect-ratio: auto;
+  padding: 1rem;
+  background-color: var(--l-black);
+  box-shadow: 0 10px 20px rgb(0 0 0 / 19%), 0 6px 6px rgb(0 0 0 / 23%);
+  position: absolute;
+  right: -110px;
+  top: 33px;
+  border-radius: 4px;
+  display: none;
+}
+
+.dropdown h5 {
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.dropdown .top__filter {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 /* Forms & Inputs */
 #manager_content {
   display: none;
@@ -137,6 +167,13 @@ h1 {
 
 .create_task .open_manager_content .open_manager_content__item_2 p:hover {
   color: var(--red);
+}
+
+.list_holder--header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
 }
 
 #task_editor {

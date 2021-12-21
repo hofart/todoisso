@@ -15,7 +15,22 @@
   <main id="view_content">
     <div id="editor" class="editor">
       <div class="list_holder">
-        <h1 id="title_tasks"></h1>
+        <div class="list_holder--header">
+          <h1 id="title_tasks"></h1>
+          <a href="#!" id="filter" class="btn btn--primary">Filter</a>
+
+          <div class="dropdown">
+            <h5>Filter by</h5>
+            <ul class="top__filter">
+              <li class="top__filter-list task--done">
+                <a href="#!"><i class="fas fa-check-square"></i> Done</a>
+              </li>
+              <li class="top__filter-list task--undone">
+                <a href="#!"><i class="fas fa-square"></i> Undone</a>
+              </li>
+            </ul>            
+          </div>
+        </div>
 
         <ul id="items"></ul>
       </div>
