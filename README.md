@@ -1,9 +1,2 @@
-# todoisso
-Studiyng Project
-
-<h1 align="center">
-    <a href="https://pt-br.reactjs.org/">🔗 React</a>
-</h1>
-<p align="center">🚀 lib para construir interfaces do usuário com componentes reutilizáveis</p>
-
-
+<h1 align="center">TodoIsso</h1>
+<p align="center">A todo App to studying JS</p>
