@@ -7,6 +7,12 @@ export default class View {
   #items = document.getElementById('items')
   #form = document.getElementById('task_editor')
   #btnAdd = document.getElementById('insert_task')
+  #btnOpenForm = document.getElementById('open_manager_content')
+  #closeManagerContent = document.getElementById('manager_content--cancel')
+  #managerContent = document.getElementById('manager_content')
+
+  #months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+  #days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
 
   addNewTask() {
     this.#btnAdd.addEventListener('click', () => {
@@ -15,7 +21,7 @@ export default class View {
       if(!title.value.trim() || !content.value.trim()) return false
 
       this.#id++
-
+      
       this.#todolist.push({
         title: title.value,
         content: content.value,
@@ -77,8 +83,28 @@ export default class View {
       li.parentNode.remove()
     }))
   }
+
+  getDate() {
+    const date = new Date()
+    document.getElementById('title_tasks').innerHTML = `
+      Today ${date.getDate()} <span id="date">${this.#days[date.getDay()]} ${this.#months[date.getMonth()]}</span>
+    `
+  }
+
+  toggleManagerContent() {
+    this.#btnOpenForm.addEventListener('click', () => {
+      this.#managerContent.style.display = 'block' 
+    })
+
+    this.#closeManagerContent.addEventListener('click', () => {
+      this.#managerContent.style.display = 'none'
+    })
+  }
   
   _init() {
     this.addNewTask()
+    this.getDate()
+    this.toggleManagerContent()
+    this.quantityTasks()
   }
 }

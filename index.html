@@ -12,30 +12,61 @@
 </head>
 
 <body>
-  <div id="view_content">
-    <header>
-      <h1>TodoIsso</h1>
-    </header>
+  <header>
+    <div class="left_control">
+      <a href="#!" title="Menu"><i class="fas fa-bars"></i></a>
+    </div>
 
-    <main>
+    <div class="right_control"> 
+      <p>development with <span>❤</span> by M.Hofart</p>
+    </div>
+  </header>
+
+  <div id="left_menu" class="left_menu">
+    <ul class="top_filters">
+      <li class="top_filters__list">
+        <a href="#!" class="item_content">
+          <div class="item_content__item_1">
+            <i class="fas fa-list-alt"></i> 
+            <p>Qtd. Tasks</p>
+          </div>
+          <div class="item_content__item_2">
+            <span id="qtd_tasks"></span>
+          </div>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <main id="view_content">
+    <div id="editor" class="editor">
       <div class="list_holder">
+        <h1 id="title_tasks"></h1>
         <ul id="items"></ul>
       </div>
 
-      <div class="manager_content">
+      <div class="create_task">
+        <a href="#!" id="open_manager_content" class="open_manager_content">
+          <div class="open_manager_content__item_1">
+            <i class="fas fa-plus red"></i>
+          </div>
+          <div class="open_manager_content__item_2">
+            <p>Add new task</p>
+          </div>
+        </a>
+      </div>
+
+      <div id="manager_content">
         <form id="task_editor">
-          <input type="text" class="task_editor__input_fields" name="title" placeholder="Title">
-          <input type="text" class="task_editor__input_fields" name="content" placeholder="Insert New Task">
+          <input type="text" class="task_editor__input_fields" name="title" placeholder="ex: Meeting tomorrow 08:00 AM">
+          <textarea class="task_editor__input_fields" name="content" placeholder="Description"></textarea>
         </form>
         
-        <button class="btn btn__primary" id="insert_task">Adicionar nova tarefa</button>
+        <button class="btn btn__primary" id="insert_task">Create Task</button>
+        <button class="btn btn__cancel" id="manager_content--cancel">Cancel</button>
       </div>
-    </main>
-
-    <footer>
-      <p>development with ❤ by M.Hofart</p>
-    </footer>
-  </div>
+    </div>
+  </main>
 
   <script defer src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" integrity="sha384-rOA1PnstxnOBLzCLMcre8ybwbTmemjzdNlILg8O7z1lUkLXozs4DHonlDtnE7fpc" crossorigin="anonymous"></script>
   <script type="module" src="/src/js/index.js"></script>
