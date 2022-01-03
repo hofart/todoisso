@@ -12,7 +12,7 @@ export default class View {
   #closeManagerContent = document.getElementById('manager_content--cancel')
   #managerContent = document.getElementById('manager_content')
 
-  #months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+  #months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
   #days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
 
   addNewTask() {
@@ -47,19 +47,19 @@ export default class View {
 
   createList(ul) {
     const li = this.#todolist.map(item => `
-      <li class="task_list_item" id="task-${item.id}">
-        <div class="task_list_item__checkbox">
-          <input type="checkbox" class="task_list_item__input" data-id="${item.id}" ${item.done ? 'checked' : ''}>
-          <div class="task_list_item__checkbox--body">
-            <p class="task_list_item__input--title title-list ${item.done ? 'done' : '' }">${item.title}</p>
-            <p class="task_list_item__input--description">${item.content}</p>
+      <li class="items__list" id="task-${item.id}">
+        <div class="items__list__checkbox">
+          <input type="checkbox" class="items__list__checkbox__input" data-id="${item.id}" ${item.done ? 'checked' : ''}>
+          <div class="items__list__checkbox__body">
+            <p class="items__list__checkbox__body__title title-list ${item.done ? 'done' : '' }">${item.title}</p>
+            <p class="items__list__checkbox__body__description">${item.content}</p>
           </div>
         </div>
-        <di class="task_list_item__delete">
-          <a href="#!" class="delete_task" data-id="${item.id}">
+        <div class="items__list__delete">
+          <a href="#!" class="items__list__delete--delete" data-id="${item.id}">
             <i class="far fa-trash-alt"></i>
           </a>
-        </di
+        </div>
       </li>
     `).join('')
 
@@ -67,7 +67,7 @@ export default class View {
   }
 
   doneOrUndone() {
-    const nodes = this.#items.querySelectorAll('.task_list_item__input')
+    const nodes = this.#items.querySelectorAll('.items__list__checkbox__input')
 
     nodes.forEach(e => e.addEventListener('click', () => {
       const data = e.getAttribute('data-id')
@@ -78,14 +78,14 @@ export default class View {
 
   filter() {
     this.#btnFilter.addEventListener('click', () => {
-      const nodes = this.#items.querySelectorAll('.task_list_item__input')
+      const nodes = this.#items.querySelectorAll('.items__list__checkbox__input')
       
       nodes.forEach(e => e.checked ? e.parentNode.parentElement.style.display = 'flex' : e.parentNode.parentElement.style.display = 'none')
     })
   }
 
   deleteTask() {
-    const nodes = this.#items.querySelectorAll('.delete_task')  
+    const nodes = this.#items.querySelectorAll('.items__list__delete--delete')  
 
     nodes.forEach(e => e.addEventListener('click', () => {
       const li = e.parentNode
@@ -97,7 +97,7 @@ export default class View {
 
   getDate() {
     const date = new Date()
-    document.getElementById('title_tasks').innerHTML = `
+    document.getElementById('view__header__title').innerHTML = `
       Today ${date.getDate()} <span id="date">${this.#days[date.getDay()]} ${this.#months[date.getMonth()]}</span>
     `
   }
