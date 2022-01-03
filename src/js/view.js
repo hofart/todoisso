@@ -11,6 +11,10 @@ export default class View {
   #openManagerContent = document.getElementById('open_manager_content')
   #closeManagerContent = document.getElementById('manager_content--cancel')
   #managerContent = document.getElementById('manager_content')
+  #dropdown = document.getElementById('dropdown')
+  #filterDoneTask = document.getElementById('task-done')
+  #filterUndoneTask = document.getElementById('task-undone')
+  #removeFilter = document.getElementById('remove-filter')
 
   #months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
   #days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
@@ -38,7 +42,6 @@ export default class View {
         this.createList(this.#items)
         this.deleteTask()
         this.doneOrUndone()
-        this.filter()
       } else {
         this.#items.style.display = 'none'
       }
@@ -76,11 +79,30 @@ export default class View {
     }))
   }
 
-  filter() {
-    this.#btnFilter.addEventListener('click', () => {
+  /* filter() {
+    this.#filterDoneTask.addEventListener('click', () => {
+      const nodes = this.#items.querySelectorAll('.items__list__checkbox__input')
+
+      nodes.forEach(e => e.checked ? e.parentNode.parentElement.classList.remove('items__list--hide') : e.parentNode.parentElement.classList.add('items__list--hide'))
+    })
+
+    this.#filterUndoneTask.addEventListener('click', () => {
       const nodes = this.#items.querySelectorAll('.items__list__checkbox__input')
       
-      nodes.forEach(e => e.checked ? e.parentNode.parentElement.style.display = 'flex' : e.parentNode.parentElement.style.display = 'none')
+      nodes.forEach(e => e.checked ? e.parentNode.parentElement.classList.add('items__list--hide') : e.parentNode.parentElement.classList.remove('items__list--hide'))
+    })
+
+    this.#removeFilter.addEventListener('click', () => {
+      const nodes = this.#items.querySelectorAll('.items__list__checkbox__input')
+
+      nodes.forEach(e => e.parentNode.parentElement.classList.remove('items__list--hide'))
+    })
+
+  } */
+
+  toggleFilter() {
+    this.#btnFilter.addEventListener('click', () => {
+      this.#dropdown.classList.contains('active') ? this.#dropdown.classList.remove('active') : this.#dropdown.classList.add('active')
     })
   }
 
@@ -117,6 +139,8 @@ export default class View {
   _init() {
     this.addNewTask()
     this.getDate()
+    // this.filter()
     this.toggleManagerContent()
+    this.toggleFilter()
   }
 }

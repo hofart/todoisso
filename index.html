@@ -19,14 +19,17 @@
         <h1 id="view__header__title"></h1>
         <a href="#!" id="filter" class="btn btn--primary">Filter</a>
 
-        <nav class="dropdown">
+        <nav id="dropdown" class="dropdown">
           <h5>Filter by</h5>
           <ul class="dropdown__menu">
-            <li class="dropdown__menu__list task--done">
-              <a href="#!"><i class="fas fa-check-square"></i> Done</a>
+            <li class="dropdown__menu__list task--done" id="task-done">
+              <a href="#!"><i class="fas fa-check"></i> Done</a>
             </li>
-            <li class="dropdown__menu__list task--undone">
+            <li class="dropdown__menu__list task--undone" id="task-undone">
               <a href="#!"><i class="fas fa-square"></i> Undone</a>
+            </li>
+            <li class="dropdown__menu__list remove--filter" id="remove-filter">
+              <a href="#!"><i class="fas fa-times"></i> Remove Filter</a>
             </li>
           </ul>            
         </nav>
