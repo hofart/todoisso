@@ -10,7 +10,12 @@
 </head>
 
 <body>
-  <main role="main">
+  <main id="view_content">
+    <div id="editor" class="editor">
+      <div class="list_holder">
+        <div class="list_holder--header">
+          <h1 id="title_tasks"></h1>
+          <a href="#!" id="filter" class="btn btn--primary">Filter</a>
 
     <div class="view">
       <section class="view__header">
@@ -23,30 +28,27 @@
         </ul>
       </section>
 
-      <ul id="items"></ul>
-    </div>
+      <div class="create_task">
+        <a href="#!" id="open_manager_content" class="open_manager_content">
+          <div class="open_manager_content__item_1">
+            <i class="fas fa-plus red"></i>
+          </div>
+          <div class="open_manager_content__item_2">
+            <p>Add new task</p>
+          </div>
+        </a>
+      </div>
 
-    <div class="editor">
-      <a href="#!" id="open_manager_content" class="editor__manager_content--open">
-        <div class="editor__manager_content__item_1">
-          <i class="fas fa-plus red"></i>
-        </div>
-        <div class="editor__manager_content__item_2">
-          <p>Add new task</p>
-        </div>
-      </a>
+      <div id="manager_content">
+        <form id="task_editor">
+          <input type="text" class="task_editor__input_fields" name="title" placeholder="ex: Meeting tomorrow 08:00 AM">
+          <textarea class="task_editor__input_fields" name="content" placeholder="Description"></textarea>
+        </form>
+        
+        <button class="btn btn--primary" id="insert_task">Create Task</button>
+        <button class="btn btn--cancel" id="manager_content--cancel">Cancel</button>
+      </div>
     </div>
-
-    <div id="manager_content" class="content">
-      <form id="task_editor" class="content__task_editor">
-        <input type="text" class="content__task_editor__input_fields" name="title" placeholder="ex: Meeting tomorrow 08:00 AM">
-        <textarea class="content__task_editor__input_fields" name="content" placeholder="Description"></textarea>
-      </form>
-      
-      <button class="btn btn--primary" id="insert_task">Create Task</button>
-      <button class="btn btn--cancel" id="manager_content--cancel">Cancel</button>
-    </div>
-
   </main>
 
   <script defer src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" integrity="sha384-rOA1PnstxnOBLzCLMcre8ybwbTmemjzdNlILg8O7z1lUkLXozs4DHonlDtnE7fpc" crossorigin="anonymous"></script>
