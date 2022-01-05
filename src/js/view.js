@@ -6,7 +6,6 @@ export default class View {
 
   #items = document.getElementById('items')
   #btnAdd = document.getElementById('insert_task')
-  #btnFilter = document.getElementById('filter')
 
   #months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
   #days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
@@ -70,16 +69,22 @@ export default class View {
     nodes.forEach(element => element.addEventListener('click', () => {
       const data = element.getAttribute('data-id')
       const task = this.#todolist.find(todo => todo.id == data)
-      element.checked ? task.done = true : task.done = false
+      if(element.checked) {
+        task.done = true
+        element.parentNode.lastElementChild.firstElementChild.classList.add('done')
+      } else {
+        task.done = false
+        element.parentNode.lastElementChild.firstElementChild.classList.remove('done')
+      }
     }))
   }
 
   deleteTask() {
     const nodes = this.#items.querySelectorAll('.items__list__delete--delete')  
-    nodes.forEach(el => el.addEventListener('click', () => {
-      const li = el.parentNode
-      const data = el.getAttribute('data-id')
-      this.#todolist.splice(this.#todolist.indexOf(el => el.id == data), 1)
+    nodes.forEach(element => element.addEventListener('click', () => {
+      const li = element.parentNode
+      const data = element.getAttribute('data-id')
+      this.#todolist.splice(this.#todolist.indexOf(element => element.id == data), 1)
       li.parentNode.remove()
     }))
   }

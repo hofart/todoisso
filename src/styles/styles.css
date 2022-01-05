@@ -175,25 +175,6 @@ textarea {
   resize: none;
 }
 
-/* Dropdown */
-.filter {
-  display: flex;
-  gap: 15px;
-}
-
-.filter .filter__list {
-  padding: 5px 8px;
-  color: white;
-  border-radius: 10px;
-  cursor: pointer;
-  list-style: none;
-}
-
-.filter .filter__list:hover {
-  background-color: var(--color-red);
-  transition: 200ms ease-in-out;
-}
-
 /* Buttons */
 .btn {
   border: none;
