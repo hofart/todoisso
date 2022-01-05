@@ -8,7 +8,7 @@ export default class View {
   #btnAdd = document.getElementById('insert_task')
   #btnFilter = document.getElementById('filter')
 
-  #months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+  #months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
   #days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
 
   // add new task
@@ -36,7 +36,6 @@ export default class View {
         this.genereteTemplate(this.#items)
         this.deleteTask()
         this.doneOrUndone()
-        this.filter()
       } else {
         this.#items.style.display = 'none'
       }
@@ -54,11 +53,11 @@ export default class View {
             <p class="items__list__checkbox__body__description">${item.content}</p>
           </div>
         </div>
-        <di class="task_list_item__delete">
-          <a href="#!" class="delete_task" data-id="${item.id}">
+        <div class="items__list__delete">
+          <a href="#!" class="items__list__delete--delete" data-id="${item.id}">
             <i class="far fa-trash-alt"></i>
           </a>
-        </di
+        </div>
       </li>
     `).join('')
 
@@ -87,7 +86,7 @@ export default class View {
 
   getDate() {
     const date = new Date()
-    document.getElementById('title_tasks').innerHTML = `
+    document.getElementById('view__header__title').innerHTML = `
       Today ${date.getDate()} <span id="date">${this.#days[date.getDay()]} ${this.#months[date.getMonth()]}</span>
     `
   }
