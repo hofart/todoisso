@@ -25,10 +25,6 @@ body {
   height: 100vh;
 }
 
-span {
-  color: var(--color-red);
-}
-
 a {
   text-decoration: none;
 }
@@ -53,18 +49,6 @@ h1 {
 .done {
   text-decoration: line-through;
   font-style: italic;
-}
-
-.active {
-  opacity: 1!important;
-}
-
-.task-done {
-  display: block;
-}
-
-.task-undone {
-  display: block;
 }
 
 #date {
@@ -105,6 +89,10 @@ main {
 #items .items__list .items__list__checkbox {
   display: flex;
   gap: 10px;
+}
+
+#items .items__list .items__list__checkbox .items__list__checkbox__input {
+  accent-color: var(--color-red);
 }
 
 #items .items__list .items__list__checkbox__body {
@@ -188,29 +176,22 @@ textarea {
 }
 
 /* Dropdown */
-.dropdown {
-  width: 150px;
-  aspect-ratio: auto;
-  padding: 1rem;
-  background-color: var(--color-gray-3);
-  box-shadow: 0 10px 20px rgb(0 0 0 / 19%), 0 6px 6px rgb(0 0 0 / 23%);
-  position: absolute;
-  right: -110px;
-  top: 33px;
-  border-radius: 4px;
-  opacity: 0;
-}
-
-.dropdown h5 {
-  margin-bottom: 10px;
-  font-weight: 600;
-  letter-spacing: .07rem;
-}
-
-.dropdown .dropdown__menu {
+.filter {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  gap: 15px;
+}
+
+.filter .filter__list {
+  padding: 5px 8px;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.filter .filter__list:hover {
+  background-color: var(--color-red);
+  transition: 200ms ease-in-out;
 }
 
 /* Buttons */

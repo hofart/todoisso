@@ -5,28 +5,22 @@ export default class View {
   #id = Math.floor(Math.random() * 9999)
 
   #items = document.getElementById('items')
-  #form = document.getElementById('task_editor')
   #btnAdd = document.getElementById('insert_task')
   #btnFilter = document.getElementById('filter')
-  #openManagerContent = document.getElementById('open_manager_content')
-  #closeManagerContent = document.getElementById('manager_content--cancel')
-  #managerContent = document.getElementById('manager_content')
-  #dropdown = document.getElementById('dropdown')
-  #filterDoneTask = document.getElementById('task-done')
-  #filterUndoneTask = document.getElementById('task-undone')
-  #removeFilter = document.getElementById('remove-filter')
 
   #months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
   #days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
 
+  // add new task
   addNewTask() {
     this.#btnAdd.addEventListener('click', () => {
-      const { title, content } = this.#form
+      const form = document.getElementById('task_editor')
+      const { title, content } = form
 
       if(!title.value.trim() || !content.value.trim()) return false
 
       this.#id++
-      
+
       this.#todolist.push({
         title: title.value,
         content: content.value,
@@ -34,27 +28,28 @@ export default class View {
         done: false
       })
 
-      this.#form.reset()
+      form.reset()
 
       if(this.#todolist) {
         this.#items.style.display = 'block'
 
-        this.createList(this.#items)
+        this.genereteTemplate(this.#items)
         this.deleteTask()
         this.doneOrUndone()
       } else {
         this.#items.style.display = 'none'
       }
-    })  
+    })
   }
 
-  createList(ul) {
-    const li = this.#todolist.map(item => `
+  // create template html
+  genereteTemplate(todo) {
+    const template = this.#todolist.map(item => `
       <li class="items__list" id="task-${item.id}">
         <div class="items__list__checkbox">
           <input type="checkbox" class="items__list__checkbox__input" data-id="${item.id}" ${item.done ? 'checked' : ''}>
           <div class="items__list__checkbox__body">
-            <p class="items__list__checkbox__body__title title-list ${item.done ? 'done' : '' }">${item.title}</p>
+            <p class="items__list__checkbox__body__title title-list ${item.done ? 'done' : ''}">${item.title}</p>
             <p class="items__list__checkbox__body__description">${item.content}</p>
           </div>
         </div>
@@ -66,53 +61,25 @@ export default class View {
       </li>
     `).join('')
 
-    ul.innerHTML = li
+    todo.innerHTML = template
   }
 
+  // check task as done or undone
   doneOrUndone() {
     const nodes = this.#items.querySelectorAll('.items__list__checkbox__input')
-
-    nodes.forEach(e => e.addEventListener('click', () => {
-      const data = e.getAttribute('data-id')
-      this.#todolist.findIndex(el => el.id == data && e.checked ? el.done = true : el.done = false)
-      e.checked ? e.parentNode.lastElementChild.firstElementChild.classList.add('done') : e.parentNode.lastElementChild.firstElementChild.classList.remove('done')
+    nodes.forEach(element => element.addEventListener('click', () => {
+      const data = element.getAttribute('data-id')
+      const task = this.#todolist.find(todo => todo.id == data)
+      element.checked ? task.done = true : task.done = false
     }))
-  }
-
-  /* filter() {
-    this.#filterDoneTask.addEventListener('click', () => {
-      const nodes = this.#items.querySelectorAll('.items__list__checkbox__input')
-
-      nodes.forEach(e => e.checked ? e.parentNode.parentElement.classList.remove('items__list--hide') : e.parentNode.parentElement.classList.add('items__list--hide'))
-    })
-
-    this.#filterUndoneTask.addEventListener('click', () => {
-      const nodes = this.#items.querySelectorAll('.items__list__checkbox__input')
-      
-      nodes.forEach(e => e.checked ? e.parentNode.parentElement.classList.add('items__list--hide') : e.parentNode.parentElement.classList.remove('items__list--hide'))
-    })
-
-    this.#removeFilter.addEventListener('click', () => {
-      const nodes = this.#items.querySelectorAll('.items__list__checkbox__input')
-
-      nodes.forEach(e => e.parentNode.parentElement.classList.remove('items__list--hide'))
-    })
-
-  } */
-
-  toggleFilter() {
-    this.#btnFilter.addEventListener('click', () => {
-      this.#dropdown.classList.contains('active') ? this.#dropdown.classList.remove('active') : this.#dropdown.classList.add('active')
-    })
   }
 
   deleteTask() {
     const nodes = this.#items.querySelectorAll('.items__list__delete--delete')  
-
-    nodes.forEach(e => e.addEventListener('click', () => {
-      const li = e.parentNode
-      const data = e.getAttribute('data-id')
-      this.#todolist.splice(this.#todolist.findIndex(el => el.id == data), 1)
+    nodes.forEach(el => el.addEventListener('click', () => {
+      const li = el.parentNode
+      const data = el.getAttribute('data-id')
+      this.#todolist.splice(this.#todolist.indexOf(el => el.id == data), 1)
       li.parentNode.remove()
     }))
   }
@@ -125,22 +92,24 @@ export default class View {
   }
 
   toggleManagerContent() {
-    this.#openManagerContent.addEventListener('click', () => {
-      this.#managerContent.style.display = 'block'
-      this.#openManagerContent.style.opacity = '0'
+    const open = document.getElementById('open_manager_content')
+    const close = document.getElementById('manager_content--cancel')
+    const content = document.getElementById('manager_content')
+
+    open.addEventListener('click', () => {
+      content.style.display = 'block'
+      open.style.opacity = '0'
     })
 
-    this.#closeManagerContent.addEventListener('click', () => {
-      this.#managerContent.style.display = 'none'
-      this.#openManagerContent.style.opacity = '1'
+    close.addEventListener('click', () => {
+      content.style.display = 'none'
+      open.style.opacity = '1'
     })
   }
   
   _init() {
     this.addNewTask()
     this.getDate()
-    // this.filter()
     this.toggleManagerContent()
-    this.toggleFilter()
   }
 }

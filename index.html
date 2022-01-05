@@ -6,8 +6,6 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TodoIsso -- Remember all your tasks every day without hassle.</title>
-
-  <link rel="stylesheet" href="/src/styles/reset.css">
   <link rel="stylesheet" href="/src/styles/styles.css">
 </head>
 
@@ -17,22 +15,12 @@
     <div class="view">
       <section class="view__header">
         <h1 id="view__header__title"></h1>
-        <a href="#!" id="filter" class="btn btn--primary">Filter</a>
 
-        <nav id="dropdown" class="dropdown">
-          <h5>Filter by</h5>
-          <ul class="dropdown__menu">
-            <li class="dropdown__menu__list task--done" id="task-done">
-              <a href="#!"><i class="fas fa-check"></i> Done</a>
-            </li>
-            <li class="dropdown__menu__list task--undone" id="task-undone">
-              <a href="#!"><i class="fas fa-square"></i> Undone</a>
-            </li>
-            <li class="dropdown__menu__list remove--filter" id="remove-filter">
-              <a href="#!"><i class="fas fa-times"></i> Remove Filter</a>
-            </li>
-          </ul>            
-        </nav>
+        <ul class="filter">
+          <li class="filter__list" id="task-done">Done</li>
+          <li class="filter__list" id="task-undone">Undone</li>
+          <li class="filter__list" id="remove-filter">All Tasks</li>
+        </ul>
       </section>
 
       <ul id="items"></ul>
