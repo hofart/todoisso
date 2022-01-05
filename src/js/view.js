@@ -43,7 +43,7 @@ export default class View {
 
   // create template html
   genereteTemplate(todo) {
-    const template = this.#todolist.map(item => `
+    const template = this.#todolist.map((item) => `
       <li class="items__list" id="task-${item.id}">
         <div class="items__list__checkbox">
           <input type="checkbox" class="items__list__checkbox__input" data-id="${item.id}" ${item.done ? 'checked' : ''}>
@@ -66,7 +66,7 @@ export default class View {
   // check task as done or undone
   doneOrUndone() {
     const nodes = this.#items.querySelectorAll('.items__list__checkbox__input')
-    nodes.forEach(element => element.addEventListener('click', () => {
+    nodes.forEach((element) => element.addEventListener('click', () => {
       const data = element.getAttribute('data-id')
       const task = this.#todolist.find(todo => todo.id == data)
       if(element.checked) {
@@ -79,16 +79,18 @@ export default class View {
     }))
   }
 
+  // delete an item from array
   deleteTask() {
     const nodes = this.#items.querySelectorAll('.items__list__delete--delete')  
-    nodes.forEach(element => element.addEventListener('click', () => {
+    nodes.forEach((element) => element.addEventListener('click', () => {
       const li = element.parentNode
       const data = element.getAttribute('data-id')
-      this.#todolist.splice(this.#todolist.indexOf(element => element.id == data), 1)
+      this.#todolist.splice(this.#todolist.indexOf((element) => element.id == data), 1)
       li.parentNode.remove()
     }))
   }
 
+  // set current date
   getDate() {
     const date = new Date()
     document.getElementById('view__header__title').innerHTML = `
@@ -96,6 +98,7 @@ export default class View {
     `
   }
 
+  // control divs
   toggleManagerContent() {
     const open = document.getElementById('open_manager_content')
     const close = document.getElementById('manager_content--cancel')
