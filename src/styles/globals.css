@@ -52,12 +52,13 @@ textarea {
   font-size: 1.1rem;
 }
 
-.done {
-  text-decoration: line-through;
+.is--done {
+  text-decoration: line-through wavy var(--color-red);
   font-style: italic;
+  color: var(--color-gray-1);
 }
 
-.is-active {
+.is--active {
   border-radius: 10px;
   background-color: var(--color-red);
 }

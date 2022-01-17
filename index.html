@@ -22,7 +22,11 @@
           <span id="count">0</span> tasks
         </p>
 
-        <div id="wrapper_filter" class="view__header__filter"></div>
+        <div id="wrapper_filter" class="view__header__filter">
+          <a href="#!" class="view__header__filter__filtered is--active" data-queryParams="all">All</a>
+          <a href="#!" class="view__header__filter__filtered" data-queryParams="active">Active</a>
+          <a href="#!" class="view__header__filter__filtered" data-queryParams="completed">Completed</a>
+        </div>
       </section>
 
       <ul id="items"></ul>
@@ -49,6 +53,9 @@
       <button class="btn btn--cancel" id="manager_content--cancel">Cancel</button>
     </div>
 
+    <figure id="empty-state">
+      <img src="./src/assets/today.svg" alt="without tasks">
+    </figure>
   </main>
 
   <script defer src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" integrity="sha384-rOA1PnstxnOBLzCLMcre8ybwbTmemjzdNlILg8O7z1lUkLXozs4DHonlDtnE7fpc" crossorigin="anonymous"></script>

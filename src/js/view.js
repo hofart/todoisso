@@ -6,7 +6,6 @@ export default class View {
 
   #items = document.getElementById('items')
   #btnAdd = document.getElementById('insert_task')
-  #filter = document.getElementById('wrapper_filter')
 
   #months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
   #days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
@@ -51,7 +50,7 @@ export default class View {
         <div class="items__list__checkbox">
           <input type="checkbox" class="items__list__checkbox__input" data-id="${item.id}" ${item.done ? 'checked' : ''}>
           <div class="items__list__checkbox__body">
-            <p class="items__list__checkbox__body__title title-list ${item.done ? 'done' : ''}">${item.title}</p>
+            <p class="items__list__checkbox__body__title title-list ${item.done ? 'is--done' : ''}">${item.title}</p>
             <p class="items__list__checkbox__body__description">${item.content}</p>
           </div>
         </div>
@@ -63,7 +62,7 @@ export default class View {
       </li>
     `).join('')
 
-    todo.innerHTML = template
+    return todo.innerHTML = template
   }
 
   // check task as done or undone
@@ -76,10 +75,10 @@ export default class View {
 
       if(element.checked) {
         task.done = true
-        element.parentNode.lastElementChild.firstElementChild.classList.add('done')
+        element.parentNode.lastElementChild.firstElementChild.classList.add('is--done')
       } else {
         task.done = false
-        element.parentNode.lastElementChild.firstElementChild.classList.remove('done')
+        element.parentNode.lastElementChild.firstElementChild.classList.remove('is--done')
       }
     }))
   }
@@ -101,30 +100,30 @@ export default class View {
   // set current date
   setDate() {
     const date = new Date()
-    document.getElementById('view__header__title').innerHTML = `
-      Today ${date.getDate()} <span id="date">${this.#days[date.getDay()]} ${this.#months[date.getMonth()]}</span>
+    const setDate = document.getElementById('view__header__title')
+    
+    return setDate.innerHTML = `
+      Today ${date.getDate()} <span id="date">${this.#days[date.getDay()]} - ${this.#months[date.getMonth()]}</span>
     `
   }
 
   // set total of tasks
   updateCount(todo) {
-    document.getElementById('count').innerHTML = `${todo.length}`
+    return document.getElementById('count').innerHTML = `${todo.length}`
   }
 
+  // filter tasks
   filter() {
     const nodes = document.querySelectorAll('.view__header__filter__filtered')
 
     nodes.forEach((element) => element.addEventListener('click', () => {
-      // ... do something
+      const params = element.getAttribute('data-queryParams')
+      console.log(params)
     }))
   }
 
-  genereteFilterTemplate() {
-    this.#filter.innerHTML = `
-      <a href="#!" class="view__header__filter__filtered is-active">All</a>
-      <a href="#!" class="view__header__filter__filtered">Active</a>
-      <a href="#!" class="view__header__filter__filtered">Completed</a>
-    `
+  figure() {
+    return console.log(this.#todolist.length)
   }
 
   // control divs
@@ -148,7 +147,6 @@ export default class View {
     this.addNewTask()
     this.setDate()
     this.toggleManagerContent()
-    this.filter()
-    this.genereteFilterTemplate()
+    this.figure()
   }
 }

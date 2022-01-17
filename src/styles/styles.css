@@ -1,5 +1,17 @@
 @import url(./globals.css);
 
+/* no tasks*/
+
+figure {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+figure img {
+  width: 250px;
+}
+
 /* Current date */
 #date {
   color: var(--color-gray-1);
@@ -50,9 +62,9 @@
   flex-direction: column;
 }
 
-#items .items__list .items__list__checkbox__body .items__list__checkbox__description {
-  margin-top: .5rem;
+#items .items__list .items__list__checkbox .items__list__checkbox__body .items__list__checkbox__body__description {
   color: var(--color-gray-1);
+  margin-top: .5rem;
 }
 
 #items .items__list .items__list__delete {
