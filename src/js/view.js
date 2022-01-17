@@ -6,6 +6,7 @@ export default class View {
 
   #items = document.getElementById('items')
   #btnAdd = document.getElementById('insert_task')
+  #filter = document.getElementById('wrapper_filter')
 
   #months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
   #days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
@@ -32,9 +33,11 @@ export default class View {
       if(this.#todolist) {
         this.#items.style.display = 'block'
 
+        // calling methods
         this.genereteTemplate(this.#items)
         this.deleteTask()
         this.doneOrUndone()
+        this.updateCount(this.#todolist)
       } else {
         this.#items.style.display = 'none'
       }
@@ -66,9 +69,11 @@ export default class View {
   // check task as done or undone
   doneOrUndone() {
     const nodes = this.#items.querySelectorAll('.items__list__checkbox__input')
+
     nodes.forEach((element) => element.addEventListener('click', () => {
       const data = element.getAttribute('data-id')
       const task = this.#todolist.find(todo => todo.id == data)
+
       if(element.checked) {
         task.done = true
         element.parentNode.lastElementChild.firstElementChild.classList.add('done')
@@ -81,20 +86,44 @@ export default class View {
 
   // delete an item from array
   deleteTask() {
-    const nodes = this.#items.querySelectorAll('.items__list__delete--delete')  
+    const nodes = this.#items.querySelectorAll('.items__list__delete--delete')
+
     nodes.forEach((element) => element.addEventListener('click', () => {
       const li = element.parentNode
       const data = element.getAttribute('data-id')
+
       this.#todolist.splice(this.#todolist.indexOf((element) => element.id == data), 1)
+      this.updateCount(this.#todolist)
       li.parentNode.remove()
     }))
   }
 
   // set current date
-  getDate() {
+  setDate() {
     const date = new Date()
     document.getElementById('view__header__title').innerHTML = `
       Today ${date.getDate()} <span id="date">${this.#days[date.getDay()]} ${this.#months[date.getMonth()]}</span>
+    `
+  }
+
+  // set total of tasks
+  updateCount(todo) {
+    document.getElementById('count').innerHTML = `${todo.length}`
+  }
+
+  filter() {
+    const nodes = document.querySelectorAll('.view__header__filter__filtered')
+
+    nodes.forEach((element) => element.addEventListener('click', () => {
+      // ... do something
+    }))
+  }
+
+  genereteFilterTemplate() {
+    this.#filter.innerHTML = `
+      <a href="#!" class="view__header__filter__filtered is-active">All</a>
+      <a href="#!" class="view__header__filter__filtered">Active</a>
+      <a href="#!" class="view__header__filter__filtered">Completed</a>
     `
   }
 
@@ -117,7 +146,9 @@ export default class View {
   
   _init() {
     this.addNewTask()
-    this.getDate()
+    this.setDate()
     this.toggleManagerContent()
+    this.filter()
+    this.genereteFilterTemplate()
   }
 }

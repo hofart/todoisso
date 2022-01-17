@@ -1,72 +1,26 @@
-@import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100;0,400;0,700;1,100;1,400;1,700&display=swap');
+@import url(./globals.css);
 
-:root {
-  --color-black-1: #282828;
-  --color-black-2: #1f1f1f;
-  --color-black-3: #171717;
-  --color-gray-1: #767676;
-  --color-gray-2: #363636;
-  --color-gray-3: #282828;
-  --color-red: #d16767;
-  --font-primary: 'Urbanist', sans-serif;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  outline: none;
-}
-
-body {
-  box-sizing: border-box;
-  background-color: #ececec;
-  font-family: var(--font-primary);
-  background-color: var(--color-black-2);
-  height: 100vh;
-}
-
-a {
-  text-decoration: none;
-}
-
-a, p, h1, h2, h3, h4, h5, h6 {
-  color: white;
-}
-
-h1 {
-  font-size: 20px;
-}
-
-.red {
-  color: var(--color-red);
-}
-
-.view__header__title {
-  color: var(--color-gray-1);
-  font-size: 1.1rem;
-}
-
-.done {
-  text-decoration: line-through;
-  font-style: italic;
-}
-
+/* Current date */
 #date {
   color: var(--color-gray-1);
   font-size: 12px;
 }
 
-main {
-  max-width: 650px;
-  width: 100%;
-  margin: 0 auto;
-  padding-top: 100px;
+/* Filter */
+.view__filter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: .5rem;
 }
 
-@media (max-width: 767px) {
-  main {
-    padding: 1.5rem;
-  }
+.view__filter .view__filter__count {
+  color: var(--color-gray-1);
+}
+
+.view__header__filter a {
+  padding: .2rem .5rem;
+  font-size: .9rem;
 }
 
 /* Tasks */
@@ -80,10 +34,6 @@ main {
   padding: .5rem 0;
   margin: 1rem 0;
   border-bottom: 1px solid var(--color-gray-2);
-}
-
-.items__list--hide {
-  display: none!important
 }
 
 #items .items__list .items__list__checkbox {
@@ -119,6 +69,10 @@ main {
 
 #items .items__list:hover .items__list__delete .items__list__delete--delete {
   opacity: 1;
+}
+
+.items__list--hide {
+  display: none!important
 }
 
 /* Forms & Inputs */
@@ -169,32 +123,4 @@ main {
 
 .content__task_editor .content__task_editor__input_fields:focus-visible {
   background-color: transparent;
-}
-
-textarea { 
-  resize: none;
-}
-
-/* Buttons */
-.btn {
-  border: none;
-  padding: 0.5rem 1rem;
-  color: white;
-  letter-spacing: 1px;
-  font-weight: 500;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.btn--primary {
-  background-color: var(--color-red);
-}
-
-.btn--cancel {
-  background-color: transparent;
-  border: 1px solid var(--color-gray-1);
-}
-
-.btn--cancel:hover {
-  background-color: var(--color-gray-1);
 }
