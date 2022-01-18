@@ -8,10 +8,7 @@
 
 We have a few channels for contact:
 
-- [Discord](https://discord.gg/docusaurus):
-  - `#general` for those using Docusaurus.
-  - `#contributors` for those wanting to contribute to the Docusaurus core.
-- [@docusaurus](https://twitter.com/docusaurus) on Twitter
-- [GitHub Issues](https://github.com/facebook/docusaurus/issues)
+- [Matheus Hofart](https://www.linkedin.com/in/matheus-hofart-708781b1/):
+- [@m_hofart](https://www.instagram.com/m_hofart/) on Instagram
 
 
