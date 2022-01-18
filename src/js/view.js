@@ -13,21 +13,9 @@ export default class View {
   #days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
 
   #filterTypes = [
-    {
-      name: 'All',
-      param: 'all',
-      active: true
-    },
-    {
-      name: 'Active',
-      param: 'active',
-      active: false
-    },
-    {
-      name: 'Completed',
-      param: 'completed',
-      active: false
-    }
+    { name: 'All', param: 'all', active: true },
+    { name: 'Active', param: 'active', active: false },
+    { name: 'Completed', param: 'completed', active: false }
   ]
 
   // add new task
@@ -75,7 +63,7 @@ export default class View {
 
   // create template html
   genereteTodoUI(todo, items) {
-    const template = todo.map(item => `
+    const ui = todo.map(item => `
       <li class="items__list" id="task-${item.id}">
         <div class="items__list__checkbox">
           <input type="checkbox" class="items__list__checkbox__input" data-id="${item.id}" ${item.done ? 'checked' : ''}>
@@ -92,7 +80,7 @@ export default class View {
       </li>
     `).join('')
 
-    return items.innerHTML = template
+    return items.innerHTML = ui
   }
 
   // check task as done or undone
@@ -102,7 +90,7 @@ export default class View {
     nodes.forEach(el => el.addEventListener('click', () => {
       const id = el.getAttribute('data-id')
       const task = this.#todolist.find(todo => todo.id == id)
-      
+
       if(el.checked) {
         task.done = true
         el.parentNode.lastElementChild.firstElementChild.classList.add('is--done')
@@ -132,7 +120,7 @@ export default class View {
   setDate() {
     const date = new Date()
     const setDate = document.getElementById('view__header__title')
-    
+
     return setDate.innerHTML = `
       Today ${date.getDate()} <span id="date">${this.#days[date.getDay()]} - ${this.#months[date.getMonth()]}</span>
     `
@@ -144,13 +132,19 @@ export default class View {
   }
 
   genereteFilterUI() {
-    const template = this.#filterTypes.map(item => `
-      <a href="#!" class="view__header__filter__filtered" data-param="${item.param}" data-status="${item.active}">
+    const ui = this.#filterTypes.map(item => `
+      <a href="#!" class="view__header__filter__filtered ${item.active ? 'is--active' : ''}" data-param="${item.param}" data-status="${item.active}">
         ${item.name}
       </a>
     `).join('')
 
-    return this.#filter.innerHTML = template
+    return this.#filter.innerHTML = ui
+  }
+
+  activeFilter(e) {
+    const nodes = document.querySelectorAll('.is--active')
+
+    console.log(nodes)
   }
 
   // filter tasks NEED REFACTORING
@@ -209,6 +203,7 @@ export default class View {
     this.toggleManagerContent()
     this.figure()
     this.genereteFilterUI()
+    this.activeFilter()
     //this.renderUI()
   }
 }
