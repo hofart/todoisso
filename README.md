@@ -2,7 +2,7 @@
   <p align="center">TodoIsso</p>
 </h1>
 
-> **This is just a project to study pure JS.**
+> **This is a project to study pure JS, based on [Todoist App](https://todoist.com/app/).**
 
 ## Contact
 
