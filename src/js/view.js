@@ -6,6 +6,7 @@ export default class View {
 
   #items = document.getElementById('items')
   #btnAdd = document.getElementById('insert_task')
+  #empty = document.getElementById('empty-figure')
 
   #months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
   #days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
@@ -16,7 +17,7 @@ export default class View {
       const form = document.getElementById('task_editor')
       const { title, content } = form
 
-      if(!title.value.trim() || !content.value.trim()) return false
+      if(!title.value.trim()) return false
 
       this.#id++
 
@@ -33,10 +34,11 @@ export default class View {
         this.#items.style.display = 'block'
 
         // calling methods
-        this.genereteTemplate(this.#items)
+        this.genereteTemplate(this.#todolist, this.#items)
         this.deleteTask()
         this.doneOrUndone()
         this.updateCount(this.#todolist)
+        this.figure()
       } else {
         this.#items.style.display = 'none'
       }
@@ -44,8 +46,8 @@ export default class View {
   }
 
   // create template html
-  genereteTemplate(todo) {
-    const template = this.#todolist.map((item) => `
+  genereteTemplate(todo, items) {
+    const template = todo.map((item) => `
       <li class="items__list" id="task-${item.id}">
         <div class="items__list__checkbox">
           <input type="checkbox" class="items__list__checkbox__input" data-id="${item.id}" ${item.done ? 'checked' : ''}>
@@ -62,7 +64,7 @@ export default class View {
       </li>
     `).join('')
 
-    return todo.innerHTML = template
+    return items.innerHTML = template
   }
 
   // check task as done or undone
@@ -70,8 +72,8 @@ export default class View {
     const nodes = this.#items.querySelectorAll('.items__list__checkbox__input')
 
     nodes.forEach((element) => element.addEventListener('click', () => {
-      const data = element.getAttribute('data-id')
-      const task = this.#todolist.find(todo => todo.id == data)
+      const id = element.getAttribute('data-id')
+      const task = this.#todolist.find(todo => todo.id == id)
 
       if(element.checked) {
         task.done = true
@@ -93,6 +95,7 @@ export default class View {
 
       this.#todolist.splice(this.#todolist.indexOf((element) => element.id == data), 1)
       this.updateCount(this.#todolist)
+      this.figure()
       li.parentNode.remove()
     }))
   }
@@ -118,12 +121,36 @@ export default class View {
 
     nodes.forEach((element) => element.addEventListener('click', () => {
       const params = element.getAttribute('data-queryParams')
-      console.log(params)
+      const nodes = this.#items.querySelectorAll('li')
+
+      if(params == 'all') {
+        nodes.forEach((element) => {
+          return element.style.display = 'flex'
+        })
+      }
+
+      if(params == 'active') {
+        nodes.forEach((element) => {
+          const active = element.firstElementChild.lastElementChild.firstElementChild
+
+          return active.classList.contains('is--done') ? element.style.display = 'none' : element.style.display = 'flex'
+        })
+      }
+
+      if(params == 'completed') {
+        nodes.forEach((element) => {
+          const completed = element.firstElementChild.lastElementChild.firstElementChild
+
+          return completed.classList.contains('is--done') ? element.style.display = 'flex' : element.style.display = 'none'
+        })      
+      }
+
     }))
   }
 
+  // show img with dont have task
   figure() {
-    return console.log(this.#todolist.length)
+    return this.#todolist.length < 1 ? this.#empty.style.display = 'block' : this.#empty.style.display = 'none'
   }
 
   // control divs
@@ -148,5 +175,6 @@ export default class View {
     this.setDate()
     this.toggleManagerContent()
     this.figure()
+    this.filter()
   }
 }
