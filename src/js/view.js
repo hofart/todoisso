@@ -7,9 +7,28 @@ export default class View {
   #items = document.getElementById('items')
   #btnAdd = document.getElementById('insert_task')
   #empty = document.getElementById('empty-figure')
+  #filter = document.getElementById('wrapper_filter')
 
   #months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
   #days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
+
+  #filterTypes = [
+    {
+      name: 'All',
+      param: 'all',
+      active: true
+    },
+    {
+      name: 'Active',
+      param: 'active',
+      active: false
+    },
+    {
+      name: 'Completed',
+      param: 'completed',
+      active: false
+    }
+  ]
 
   // add new task
   addNewTask() {
@@ -28,26 +47,35 @@ export default class View {
         done: false
       })
 
+      // localStorage.setItem('todos', JSON.stringify(this.#todolist))
+
       form.reset()
 
       if(this.#todolist) {
         this.#items.style.display = 'block'
 
         // calling methods
-        this.genereteTemplate(this.#todolist, this.#items)
+        this.genereteTodoUI(this.#todolist, this.#items)
         this.deleteTask()
         this.doneOrUndone()
         this.updateCount(this.#todolist)
         this.figure()
+        this.filter()
       } else {
         this.#items.style.display = 'none'
       }
     })
   }
 
+  // render tasks from localStorage
+  renderUI() {
+    const todo = JSON.parse(localStorage.getItem('todos'))
+    return this.todoUI(todo, this.#items)
+  }
+
   // create template html
-  genereteTemplate(todo, items) {
-    const template = todo.map((item) => `
+  genereteTodoUI(todo, items) {
+    const template = todo.map(item => `
       <li class="items__list" id="task-${item.id}">
         <div class="items__list__checkbox">
           <input type="checkbox" class="items__list__checkbox__input" data-id="${item.id}" ${item.done ? 'checked' : ''}>
@@ -71,16 +99,16 @@ export default class View {
   doneOrUndone() {
     const nodes = this.#items.querySelectorAll('.items__list__checkbox__input')
 
-    nodes.forEach((element) => element.addEventListener('click', () => {
-      const id = element.getAttribute('data-id')
+    nodes.forEach(el => el.addEventListener('click', () => {
+      const id = el.getAttribute('data-id')
       const task = this.#todolist.find(todo => todo.id == id)
-
-      if(element.checked) {
+      
+      if(el.checked) {
         task.done = true
-        element.parentNode.lastElementChild.firstElementChild.classList.add('is--done')
+        el.parentNode.lastElementChild.firstElementChild.classList.add('is--done')
       } else {
         task.done = false
-        element.parentNode.lastElementChild.firstElementChild.classList.remove('is--done')
+        el.parentNode.lastElementChild.firstElementChild.classList.remove('is--done')
       }
     }))
   }
@@ -89,11 +117,11 @@ export default class View {
   deleteTask() {
     const nodes = this.#items.querySelectorAll('.items__list__delete--delete')
 
-    nodes.forEach((element) => element.addEventListener('click', () => {
-      const li = element.parentNode
-      const data = element.getAttribute('data-id')
+    nodes.forEach(el => el.addEventListener('click', () => {
+      const li = el.parentNode
+      const id = el.getAttribute('data-id')
 
-      this.#todolist.splice(this.#todolist.indexOf((element) => element.id == data), 1)
+      this.#todolist.splice(this.#todolist.indexOf(el => el.id == id), 1)
       this.updateCount(this.#todolist)
       this.figure()
       li.parentNode.remove()
@@ -115,36 +143,41 @@ export default class View {
     return document.getElementById('count').innerHTML = `${todo.length}`
   }
 
-  // filter tasks
+  genereteFilterUI() {
+    const template = this.#filterTypes.map(item => `
+      <a href="#!" class="view__header__filter__filtered" data-param="${item.param}" data-status="${item.active}">
+        ${item.name}
+      </a>
+    `).join('')
+
+    return this.#filter.innerHTML = template
+  }
+
+  // filter tasks NEED REFACTORING
   filter() {
     const nodes = document.querySelectorAll('.view__header__filter__filtered')
 
-    nodes.forEach((element) => element.addEventListener('click', () => {
-      const params = element.getAttribute('data-queryParams')
-      const nodes = this.#items.querySelectorAll('li')
+    nodes.forEach(el => el.addEventListener('click', () => {
+      const param = el.getAttribute('data-param')
+      const li = this.#items.querySelectorAll('li')
 
-      if(params == 'all') {
-        nodes.forEach((element) => {
-          return element.style.display = 'flex'
+      if(param == 'all') {
+        li.forEach(el => el.style.display = 'flex')
+      }
+
+      if(param == 'active') {
+        li.forEach(el => {
+          const active = el.firstElementChild.lastElementChild.firstElementChild
+          active.classList.contains('is--done') ? el.style.display = 'none' : el.style.display = 'flex'
         })
       }
 
-      if(params == 'active') {
-        nodes.forEach((element) => {
-          const active = element.firstElementChild.lastElementChild.firstElementChild
-
-          return active.classList.contains('is--done') ? element.style.display = 'none' : element.style.display = 'flex'
+      if(param == 'completed') {
+        li.forEach(el => {
+          const completed = el.firstElementChild.lastElementChild.firstElementChild
+          completed.classList.contains('is--done') ? el.style.display = 'flex' : el.style.display = 'none'
         })
       }
-
-      if(params == 'completed') {
-        nodes.forEach((element) => {
-          const completed = element.firstElementChild.lastElementChild.firstElementChild
-
-          return completed.classList.contains('is--done') ? element.style.display = 'flex' : element.style.display = 'none'
-        })      
-      }
-
     }))
   }
 
@@ -160,7 +193,7 @@ export default class View {
     const content = document.getElementById('manager_content')
 
     open.addEventListener('click', () => {
-      content.style.display = 'block'
+      content.style.display = 'block' 
       open.style.opacity = '0'
     })
 
@@ -175,6 +208,7 @@ export default class View {
     this.setDate()
     this.toggleManagerContent()
     this.figure()
-    this.filter()
+    this.genereteFilterUI()
+    //this.renderUI()
   }
 }
