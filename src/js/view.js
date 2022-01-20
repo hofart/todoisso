@@ -43,7 +43,7 @@ export default class View {
         this.#items.style.display = 'block'
 
         // calling methods
-        this.genereteTodoUI(this.#todolist, this.#items)
+        this.todoUI(this.#todolist, this.#items)
         this.deleteTask()
         this.doneOrUndone()
         this.updateCount(this.#todolist)
@@ -62,7 +62,7 @@ export default class View {
   }
 
   // create template html
-  genereteTodoUI(todo, items) {
+  todoUI(todo, items) {
     const ui = todo.map(item => `
       <li class="items__list" id="task-${item.id}">
         <div class="items__list__checkbox">
@@ -131,9 +131,14 @@ export default class View {
     return document.getElementById('count').innerHTML = `${todo.length}`
   }
 
-  genereteFilterUI() {
+  filterUI() {
     const ui = this.#filterTypes.map(item => `
-      <a href="#!" class="view__header__filter__filtered ${item.active ? 'is--active' : ''}" data-param="${item.param}" data-status="${item.active}">
+      <a 
+        href="#!" 
+        class="view__header__filter__filtered ${item.active ? 'is--active' : ''}" 
+        data-param="${item.param}" 
+        data-status="${item.active}"
+      >
         ${item.name}
       </a>
     `).join('')
@@ -141,10 +146,18 @@ export default class View {
     return this.#filter.innerHTML = ui
   }
 
-  activeFilter(e) {
-    const nodes = document.querySelectorAll('.is--active')
+  activeFilter() {
+    const nodes = document.querySelectorAll('.view__header__filter__filtered')
 
-    console.log(nodes)
+    nodes.forEach(el => el.addEventListener('click', () => {
+      const param = el.getAttribute('data-param')
+      const active = this.#filterTypes.find(i => i.param == param)
+
+      for(let key of this.#filterTypes) {
+        key.active = false
+        active.param == key.param ? key.active = true : null
+      }
+    }))
   }
 
   // filter tasks NEED REFACTORING
@@ -202,7 +215,7 @@ export default class View {
     this.setDate()
     this.toggleManagerContent()
     this.figure()
-    this.genereteFilterUI()
+    this.filterUI()
     this.activeFilter()
     //this.renderUI()
   }
