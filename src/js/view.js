@@ -35,8 +35,6 @@ export default class View {
         done: false
       })
 
-      // localStorage.setItem('todos', JSON.stringify(this.#todolist))
-
       form.reset()
 
       if(this.#todolist) {
@@ -53,12 +51,6 @@ export default class View {
         this.#items.style.display = 'none'
       }
     })
-  }
-
-  // render tasks from localStorage
-  renderUI() {
-    const todo = JSON.parse(localStorage.getItem('todos'))
-    return this.todoUI(todo, this.#items)
   }
 
   // create template html
@@ -133,7 +125,7 @@ export default class View {
 
   filterUI() {
     const ui = this.#filterTypes.map(item => `
-      <a 
+      <a
         href="#!" 
         class="view__header__filter__filtered ${item.active ? 'is--active' : ''}" 
         data-param="${item.param}" 
@@ -143,20 +135,25 @@ export default class View {
       </a>
     `).join('')
 
-    return this.#filter.innerHTML = ui
+    this.#filter.innerHTML = ui
+
+    this.activeFilter()
+    this.filter()
   }
 
   activeFilter() {
     const nodes = document.querySelectorAll('.view__header__filter__filtered')
 
     nodes.forEach(el => el.addEventListener('click', () => {
-      const param = el.getAttribute('data-param')
-      const active = this.#filterTypes.find(i => i.param == param)
+      const dataParam = el.getAttribute('data-param')
+      const type = this.#filterTypes.find(i => i.param == dataParam)
 
       for(let key of this.#filterTypes) {
         key.active = false
-        active.param == key.param ? key.active = true : null
+        type.param == key.param ? key.active = true : null
       }
+
+      this.filterUI()
     }))
   }
 
@@ -165,21 +162,21 @@ export default class View {
     const nodes = document.querySelectorAll('.view__header__filter__filtered')
 
     nodes.forEach(el => el.addEventListener('click', () => {
-      const param = el.getAttribute('data-param')
+      const dataParam = el.getAttribute('data-param')
       const li = this.#items.querySelectorAll('li')
 
-      if(param == 'all') {
+      if(dataParam == 'all') {
         li.forEach(el => el.style.display = 'flex')
       }
 
-      if(param == 'active') {
+      if(dataParam == 'active') {
         li.forEach(el => {
           const active = el.firstElementChild.lastElementChild.firstElementChild
           active.classList.contains('is--done') ? el.style.display = 'none' : el.style.display = 'flex'
         })
       }
 
-      if(param == 'completed') {
+      if(dataParam == 'completed') {
         li.forEach(el => {
           const completed = el.firstElementChild.lastElementChild.firstElementChild
           completed.classList.contains('is--done') ? el.style.display = 'flex' : el.style.display = 'none'
@@ -216,7 +213,5 @@ export default class View {
     this.toggleManagerContent()
     this.figure()
     this.filterUI()
-    this.activeFilter()
-    //this.renderUI()
   }
 }
