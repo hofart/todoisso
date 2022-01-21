@@ -13,42 +13,50 @@
   <main role="main">
 
     <div class="view">
-      <section class="view__header">
+      <div class="view__header">
         <h1 id="view__header__title"></h1>
-      </section>
+      </div>
 
-      <section class="view__filter">
+      <div class="view__filter">
         <p class="view__filter__count"><span id="count">0</span> tasks</p>
+        <div class="view__filter" id="wrapper-filter"></div>
+      </div>
 
-        <div id="wrapper_filter" class="view__header__filter"></div>
-      </section>
-
-      <ul id="items"></ul>
+      <ul class="view__list" id="items"></ul>
     </div>
 
-    <div class="editor">
-      <a href="#!" id="open_manager_content" class="editor__manager_content--open">
-        <div class="editor__manager_content__item_1">
-          <i class="fas fa-plus red"></i>
+    <div class="create-content">
+      <a href="#!" id="open" class="create-content__add-task">
+        <div class="create-content__add-task__icon">
+          <i class="fas fa-plus is--red"></i>
         </div>
-        <div class="editor__manager_content__item_2">
+        <div class="create-content__add-task__text">
           <p>Add new task</p>
+        </div>
+      </a>
+
+      <a href="#!" id="" class="create-content__add-task">
+        <div class="create-content__add-task__icon">
+          <i class="fas fa-plus is--red"></i>
+        </div>
+        <div class="create-content__add-task__text">
+          <p>Add new category</p>
         </div>
       </a>
     </div>
 
-    <div id="manager_content" class="content">
-      <form id="task_editor" class="content__task_editor">
-        <input type="text" class="content__task_editor__input_fields" name="title" placeholder="ex: Meeting tomorrow 08:00 AM">
-        <textarea class="content__task_editor__input_fields" name="content" placeholder="Description"></textarea>
+    <div class="manager-content" id="manager-content">
+      <form id="task-editor" class="manager-content__form">
+        <input type="text" class="manager-content__form__field" name="title" placeholder="ex: Meeting tomorrow 08:00 AM">
+        <textarea class="manager-content__form__field" name="content" placeholder="Description"></textarea>
       </form>
 
-      <button class="btn btn--primary" id="insert_task">Create Task</button>
-      <button class="btn btn--cancel" id="manager_content--cancel">Cancel</button>
+      <button class="btn btn--primary" id="add-task">Create Task</button>
+      <button class="btn btn--cancel" id="close">Cancel</button>
     </div>
 
-    <figure id="empty-state">
-      <img src="./src/assets/today.svg" id="empty-figure" alt="without tasks">
+    <figure class="empty" id="empty-state">
+      <img src="./src/assets/empty.svg" class="empty__img" id="empty-figure" alt="empty">
     </figure>
   </main>
 

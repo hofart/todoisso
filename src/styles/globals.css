@@ -43,13 +43,8 @@ textarea {
 }
 
 /* Setting class to use */
-.red {
+.is--red {
   color: var(--color-red);
-}
-
-.view__header__title {
-  color: var(--color-gray-1);
-  font-size: 1.1rem;
 }
 
 .is--done {
@@ -61,12 +56,6 @@ textarea {
 .is--active {
   border-radius: 10px;
   background-color: var(--color-red);
-}
-
-.is--empty {
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 /* Principal content */

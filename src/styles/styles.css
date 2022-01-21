@@ -1,116 +1,12 @@
 @import url(./globals.css);
 
-/* no tasks*/
-
-figure {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-figure img {
-  width: 250px;
-}
-
-/* Current date */
+/* current date */
 #date {
   color: var(--color-gray-1);
   font-size: 12px;
 }
 
-/* Filter */
-.view__filter {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: .5rem;
-}
-
-.view__filter .view__filter__count {
-  color: var(--color-gray-1);
-}
-
-.view__header__filter a {
-  padding: .2rem .5rem;
-  font-size: .9rem;
-}
-
-/* Tasks */
-#items {
-  width: 100%;
-}
-
-#items .items__list {
-  display: flex;
-  justify-content: space-between;
-  padding: .5rem 0;
-  margin: 1rem 0;
-  border-bottom: 1px solid var(--color-gray-2);
-}
-
-#items .items__list .items__list__checkbox {
-  display: flex;
-  gap: 10px;
-}
-
-#items .items__list .items__list__checkbox .items__list__checkbox__input {
-  accent-color: var(--color-red);
-}
-
-#items .items__list .items__list__checkbox__body {
-  display: flex;
-  flex-direction: column;
-}
-
-#items .items__list .items__list__checkbox .items__list__checkbox__body .items__list__checkbox__body__description {
-  color: var(--color-gray-1);
-  margin-top: .5rem;
-}
-
-#items .items__list .items__list__delete {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: .5rem;
-}
-
-#items .items__list .items__list__delete .items__list__delete--delete {
-  color: var(--color-red);
-  opacity: 0;
-}
-
-#items .items__list:hover .items__list__delete .items__list__delete--delete {
-  opacity: 1;
-}
-
-.items__list--hide {
-  display: none!important
-}
-
-/* Forms & Inputs */
-#manager_content {
-  display: none;
-  border: 1px solid var(--color-gray-1);
-  border-radius: 4px;
-  padding: .5rem;
-  background-color: var(--color-black-3);
-}
-
-.editor {
-  padding: 1rem 0;
-}
-
-.editor .editor__manager_content--open {
-  color: var(--gray);
-  font-size: 14px;
-  display: flex;
-  gap: 10px;
-}
-
-.editor .editor__manager_content--open .editor__manager_content__item_2 p:hover {
-  color: var(--color-red);
-}
-
+/* main content */
 .view__header {
   display: flex;
   justify-content: space-between;
@@ -118,14 +14,112 @@ figure img {
   position: relative;
 }
 
-.content__task_editor {
+.view__header__title {
+  color: var(--color-gray-1);
+  font-size: 1.1rem;
+}
+
+/* filter */
+.view__filter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: .5rem;
+}
+
+.view__filter__count {
+  color: var(--color-gray-1);
+}
+
+.view__filter__filtered {
+  padding: .2rem .5rem;
+  font-size: .9rem;
+}
+
+/* tasks */
+.view__list {
+  width: 100%;
+}
+
+.view__list__task {
+  display: flex;
+  justify-content: space-between;
+  padding: .5rem 0;
+  margin: 1rem 0;
+  border-bottom: 1px solid var(--color-gray-2);
+}
+
+.view__list__task__checkbox {
+  display: flex;
+  gap: 10px;
+}
+
+.view__list__task__checkbox__input{
+  accent-color: var(--color-red);
+}
+
+.view__list__task__checkbox__body {
+  display: flex;
+  flex-direction: column;
+}
+
+.view__list__task__checkbox__body__description {
+  color: var(--color-gray-1);
+  margin-top: .5rem;
+}
+
+.view__list__task__delete {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: .5rem;
+}
+
+.view__list__task__delete--delete {
+  color: var(--color-red);
+  opacity: 0;
+}
+
+.view__list__task:hover .view__list__task__delete--delete {
+  opacity: 1;
+}
+
+/* btn to control elements */
+.create-content {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.create-content__add-task {
+  color: var(--gray);
+  font-size: 14px;
+  display: flex;
+  gap: 10px;
+}
+
+.create-content__add-task__text p:hover {
+  color: var(--color-red);
+}
+
+/* forms & inputs */
+.manager-content {
+  display: none;
+  border: 1px solid var(--color-gray-1);
+  border-radius: 4px;
+  padding: .5rem;
+  background-color: var(--color-black-3);
+}
+
+.manager-content__form {
   display: flex;
   flex-direction: column;
   gap: 5px;
   margin: 0 0 1rem 0;
 }
 
-.content__task_editor .content__task_editor__input_fields {
+.manager-content__form__field {
   padding: .5rem;
   border-radius: 4px;
   border: none;
@@ -133,6 +127,17 @@ figure img {
   color: var(--color-gray-1);
 }
 
-.content__task_editor .content__task_editor__input_fields:focus-visible {
+.manager-content__form__field:focus-visible {
   background-color: transparent;
+}
+
+/* empty */
+.empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.empty .empty__img {
+  width: 250px;
 }

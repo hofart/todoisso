@@ -2,12 +2,14 @@ export default class View {
   constructor() {}
 
   #todolist = []
+  #categories = []
+
   #id = Math.floor(Math.random() * 9999)
 
   #items = document.getElementById('items')
-  #btnAdd = document.getElementById('insert_task')
+  #btnAdd = document.getElementById('add-task')
   #empty = document.getElementById('empty-figure')
-  #filter = document.getElementById('wrapper_filter')
+  #filter = document.getElementById('wrapper-filter')
 
   #months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
   #days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
@@ -21,7 +23,7 @@ export default class View {
   // add new task
   addNewTask() {
     this.#btnAdd.addEventListener('click', () => {
-      const form = document.getElementById('task_editor')
+      const form = document.getElementById('task-editor')
       const { title, content } = form
 
       if(!title.value.trim()) return false
@@ -46,7 +48,7 @@ export default class View {
         this.doneOrUndone()
         this.updateCount(this.#todolist)
         this.figure()
-        this.filter()
+        this.filterUI()
       } else {
         this.#items.style.display = 'none'
       }
@@ -56,16 +58,16 @@ export default class View {
   // create template html
   todoUI(todo, items) {
     const ui = todo.map(item => `
-      <li class="items__list" id="task-${item.id}">
-        <div class="items__list__checkbox">
-          <input type="checkbox" class="items__list__checkbox__input" data-id="${item.id}" ${item.done ? 'checked' : ''}>
-          <div class="items__list__checkbox__body">
-            <p class="items__list__checkbox__body__title title-list ${item.done ? 'is--done' : ''}">${item.title}</p>
-            <p class="items__list__checkbox__body__description">${item.content}</p>
+      <li class="view__list__task" id="task-${item.id}">
+        <div class="view__list__task__checkbox">
+          <input type="checkbox" class="view__list__task__checkbox__input" data-id="${item.id}" ${item.done ? 'checked' : ''}>
+          <div class="view__list__task__checkbox__body">
+            <p class="view__list__task__checkbox__body__title title-list ${item.done ? 'is--done' : ''}">${item.title}</p>
+            <p class="view__list__task__checkbox__body__description">${item.content}</p>
           </div>
         </div>
-        <div class="items__list__delete">
-          <a href="#!" class="items__list__delete--delete" data-id="${item.id}">
+        <div class="view__list__task__delete">
+          <a href="#!" class="view__list__task__delete--delete" data-id="${item.id}">
             <i class="far fa-trash-alt"></i>
           </a>
         </div>
@@ -77,7 +79,7 @@ export default class View {
 
   // check task as done or undone
   doneOrUndone() {
-    const nodes = this.#items.querySelectorAll('.items__list__checkbox__input')
+    const nodes = this.#items.querySelectorAll('.view__list__task__checkbox__input')
 
     nodes.forEach(el => el.addEventListener('click', () => {
       const id = el.getAttribute('data-id')
@@ -95,7 +97,7 @@ export default class View {
 
   // delete an item from array
   deleteTask() {
-    const nodes = this.#items.querySelectorAll('.items__list__delete--delete')
+    const nodes = this.#items.querySelectorAll('.view__list__task__delete--delete')
 
     nodes.forEach(el => el.addEventListener('click', () => {
       const li = el.parentNode
@@ -103,6 +105,7 @@ export default class View {
 
       this.#todolist.splice(this.#todolist.indexOf(el => el.id == id), 1)
       this.updateCount(this.#todolist)
+      this.filterUI()
       this.figure()
       li.parentNode.remove()
     }))
@@ -123,11 +126,14 @@ export default class View {
     return document.getElementById('count').innerHTML = `${todo.length}`
   }
 
+  // create template html
   filterUI() {
+    !this.#todolist.length ? this.#filter.style.display = 'none' : this.#filter.style.display = 'block'
+
     const ui = this.#filterTypes.map(item => `
       <a
         href="#!" 
-        class="view__header__filter__filtered ${item.active ? 'is--active' : ''}" 
+        class="view__filter__filtered ${item.active ? 'is--active' : ''}" 
         data-param="${item.param}" 
         data-status="${item.active}"
       >
@@ -141,8 +147,9 @@ export default class View {
     this.filter()
   }
 
+  // set class active 
   activeFilter() {
-    const nodes = document.querySelectorAll('.view__header__filter__filtered')
+    const nodes = document.querySelectorAll('.view__filter__filtered')
 
     nodes.forEach(el => el.addEventListener('click', () => {
       const dataParam = el.getAttribute('data-param')
@@ -159,7 +166,7 @@ export default class View {
 
   // filter tasks NEED REFACTORING
   filter() {
-    const nodes = document.querySelectorAll('.view__header__filter__filtered')
+    const nodes = document.querySelectorAll('.view__filter__filtered')
 
     nodes.forEach(el => el.addEventListener('click', () => {
       const dataParam = el.getAttribute('data-param')
@@ -192,17 +199,17 @@ export default class View {
 
   // control divs
   toggleManagerContent() {
-    const open = document.getElementById('open_manager_content')
-    const close = document.getElementById('manager_content--cancel')
-    const content = document.getElementById('manager_content')
+    const open = document.getElementById('open')
+    const close = document.getElementById('close')
+    const managerContent = document.getElementById('manager-content')
 
     open.addEventListener('click', () => {
-      content.style.display = 'block' 
+      managerContent.style.display = 'block' 
       open.style.opacity = '0'
     })
 
     close.addEventListener('click', () => {
-      content.style.display = 'none'
+      managerContent.style.display = 'none'
       open.style.opacity = '1'
     })
   }
@@ -212,6 +219,5 @@ export default class View {
     this.setDate()
     this.toggleManagerContent()
     this.figure()
-    this.filterUI()
   }
 }
