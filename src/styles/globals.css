@@ -73,6 +73,11 @@ main {
 }
 
 /* Buttons */
+.btn-group {
+  display: flex;
+  gap: 10px;
+}
+
 .btn {
   border: none;
   padding: 0.5rem 1rem;

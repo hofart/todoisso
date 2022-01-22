@@ -4,10 +4,9 @@ export default class View {
   #todolist = []
   #categories = []
 
-  #id = Math.floor(Math.random() * 9999)
-
   #items = document.getElementById('items')
   #btnAdd = document.getElementById('add-task')
+  #btnCategory = document.getElementById('add-category')
   #empty = document.getElementById('empty-figure')
   #filter = document.getElementById('wrapper-filter')
 
@@ -28,12 +27,10 @@ export default class View {
 
       if(!title.value.trim()) return false
 
-      this.#id++
-
       this.#todolist.push({
         title: title.value,
         content: content.value,
-        id: this.#id,
+        id: Math.floor(Math.random() * 9999),
         done: false
       })
 
@@ -52,6 +49,29 @@ export default class View {
       } else {
         this.#items.style.display = 'none'
       }
+
+      console.log(this.#todolist)
+    })
+  }
+
+  // add new category
+  addNewCategory() {
+    this.#btnCategory.addEventListener('click', () => {
+      const form = document.getElementById('category-editor')
+      const { title } = form
+
+      if(!title.value.trim()) return false
+
+      this.#categories.push({
+        title: title.value,
+        id: Math.floor(Math.random() * 9999)
+      })
+
+      form.reset()
+
+      this.categoryUI(this.#categories)
+
+      console.log(this.#categories)
     })
   }
 
@@ -75,6 +95,16 @@ export default class View {
     `).join('')
 
     return items.innerHTML = ui
+  }
+
+  categoryUI(category) {
+    const ui = category.map(item => `
+      <span class="view__categorie__category" data-id="${item.id}">
+        ${item.title}
+      </span>
+    `).join('')
+
+    return document.getElementById('category').innerHTML = ui
   }
 
   // check task as done or undone
@@ -123,7 +153,7 @@ export default class View {
 
   // set total of tasks
   updateCount(todo) {
-    return document.getElementById('count').innerHTML = `${todo.length}`
+    return document.getElementById('count').innerHTML = `${todo.length} tasks`
   }
 
   // create template html
@@ -199,23 +229,43 @@ export default class View {
 
   // control divs
   toggleManagerContent() {
-    const open = document.getElementById('open')
-    const close = document.getElementById('close')
+    const btnOpen = document.getElementById('open')
+    const btnClose = document.getElementById('close')
     const managerContent = document.getElementById('manager-content')
+    const openCategory = document.getElementById('open-category')
+    const formTask = document.getElementById('task-editor')
+    const formCategory = document.getElementById('category-editor')
 
-    open.addEventListener('click', () => {
+    btnOpen.addEventListener('click', () => {
       managerContent.style.display = 'block' 
-      open.style.opacity = '0'
+      btnOpen.style.opacity = '0'
+      openCategory.style.opacity = '0'
+      formCategory.style.display = 'none'
+      formTask.style.display = 'flex'
+      this.#btnCategory.style.display = 'none'
+      this.#btnAdd.style.display = 'block'
     })
 
-    close.addEventListener('click', () => {
+    openCategory.addEventListener('click', () => {
+      managerContent.style.display = 'block'
+      btnOpen.style.opacity = '0'
+      openCategory.style.opacity = '0'
+      formTask.style.display = 'none'
+      formCategory.style.display = 'flex'
+      this.#btnAdd.style.display = 'none'
+      this.#btnCategory.style.display = 'block'
+    })
+
+    btnClose.addEventListener('click', () => {
       managerContent.style.display = 'none'
-      open.style.opacity = '1'
+      btnOpen.style.opacity = '1'
+      openCategory.style.opacity = '1'
     })
   }
   
   _init() {
     this.addNewTask()
+    this.addNewCategory()
     this.setDate()
     this.toggleManagerContent()
     this.figure()

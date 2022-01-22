@@ -11,23 +11,25 @@
 
 <body>
   <main role="main">
-
     <div class="view">
       <div class="view__header">
         <h1 id="view__header__title"></h1>
       </div>
 
       <div class="view__filter">
-        <p class="view__filter__count"><span id="count">0</span> tasks</p>
+        <p class="view__filter__count">
+          <span id="count">0 tasks</span>
+        </p>
         <div class="view__filter" id="wrapper-filter"></div>
       </div>
 
+      <div class="view__categories" id="category"></div>
       <ul class="view__list" id="items"></ul>
     </div>
 
     <div class="create-content">
-      <a href="#!" id="open" class="create-content__add-task">
-        <div class="create-content__add-task__icon">
+      <a href="#!" id="open" class="create-content__btn">
+        <div class="create-content__btn__icon">
           <i class="fas fa-plus is--red"></i>
         </div>
         <div class="create-content__add-task__text">
@@ -35,11 +37,11 @@
         </div>
       </a>
 
-      <a href="#!" id="" class="create-content__add-task">
-        <div class="create-content__add-task__icon">
+      <a href="#!" id="open-category" class="create-content__btn">
+        <div class="create-content__btn__icon">
           <i class="fas fa-plus is--red"></i>
         </div>
-        <div class="create-content__add-task__text">
+        <div class="create-content__btn__text">
           <p>Add new category</p>
         </div>
       </a>
@@ -51,8 +53,15 @@
         <textarea class="manager-content__form__field" name="content" placeholder="Description"></textarea>
       </form>
 
-      <button class="btn btn--primary" id="add-task">Create Task</button>
-      <button class="btn btn--cancel" id="close">Cancel</button>
+      <form id="category-editor" class="manager-content__form">
+        <input type="text" class="manager-content__form__field" name="title" placeholder="New category">
+      </form>
+
+      <div class="btn-group">
+        <button class="btn btn--primary" id="add-task">Create Task</button>
+        <button class="btn btn--primary" id="add-category">Create Category</button>
+        <button class="btn btn--cancel" id="close">Cancel</button>
+      </div>
     </div>
 
     <figure class="empty" id="empty-state">
@@ -60,8 +69,8 @@
     </figure>
   </main>
 
-  <script 
-    defer 
+  <script
+    defer
     src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" 
     integrity="sha384-rOA1PnstxnOBLzCLMcre8ybwbTmemjzdNlILg8O7z1lUkLXozs4DHonlDtnE7fpc"
     crossorigin="anonymous"
