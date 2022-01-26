@@ -42,6 +42,13 @@ textarea {
   resize: none;
 }
 
+small {
+  color: var(--color-gray-1);
+  font-size: .8rem;
+  font-style: italic;
+  margin-top: 5px;
+}
+
 /* Setting class to use */
 .is--red {
   color: var(--color-red);

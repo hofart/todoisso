@@ -23,7 +23,7 @@ export default class View {
   addNewTask() {
     this.#btnAdd.addEventListener('click', () => {
       const form = document.getElementById('task-editor')
-      const { title, content } = form
+      const { title, content, category } = form
 
       if(!title.value.trim()) return false
 
@@ -31,7 +31,8 @@ export default class View {
         title: title.value,
         content: content.value,
         id: Math.floor(Math.random() * 9999),
-        done: false
+        done: false,
+        category: category.value ? category.value : false
       })
 
       form.reset()
@@ -70,8 +71,6 @@ export default class View {
       form.reset()
 
       this.categoryUI(this.#categories)
-
-      console.log(this.#categories)
     })
   }
 
@@ -84,8 +83,10 @@ export default class View {
           <div class="view__list__task__checkbox__body">
             <p class="view__list__task__checkbox__body__title title-list ${item.done ? 'is--done' : ''}">${item.title}</p>
             <p class="view__list__task__checkbox__body__description">${item.content}</p>
+            ${item.category ? `<small>Category: ${item.category}</small>` : ''}
           </div>
         </div>
+
         <div class="view__list__task__delete">
           <a href="#!" class="view__list__task__delete--delete" data-id="${item.id}">
             <i class="far fa-trash-alt"></i>
@@ -94,17 +95,34 @@ export default class View {
       </li>
     `).join('')
 
-    return items.innerHTML = ui
+    items.innerHTML = ui
+  }
+
+  renderOptionCategories(category) {
+    const select = document.getElementById('get-categories')
+    const ui = `
+      <select class="manager-content__form__field" id="get-categories" name="category">
+        <option value="" selected disable>Category</option>
+        ${category.map(item => `
+          <option value="${item.title}">${item.title}</option>
+        `)}
+      </select>
+    `
+
+    select.innerHTML = ui
   }
 
   categoryUI(category) {
+    const div = document.getElementById('category')
     const ui = category.map(item => `
       <span class="view__categorie__category" data-id="${item.id}">
         ${item.title}
       </span>
     `).join('')
 
-    return document.getElementById('category').innerHTML = ui
+    div.innerHTML = ui
+
+    if(category) this.renderOptionCategories(category)
   }
 
   // check task as done or undone
@@ -146,7 +164,7 @@ export default class View {
     const date = new Date()
     const setDate = document.getElementById('view__header__title')
 
-    return setDate.innerHTML = `
+    setDate.innerHTML = `
       Today ${date.getDate()} <span id="date">${this.#days[date.getDay()]} - ${this.#months[date.getMonth()]}</span>
     `
   }
@@ -235,6 +253,7 @@ export default class View {
     const openCategory = document.getElementById('open-category')
     const formTask = document.getElementById('task-editor')
     const formCategory = document.getElementById('category-editor')
+    const select = document.getElementById('get-categories')
 
     btnOpen.addEventListener('click', () => {
       managerContent.style.display = 'block' 
@@ -244,6 +263,7 @@ export default class View {
       formTask.style.display = 'flex'
       this.#btnCategory.style.display = 'none'
       this.#btnAdd.style.display = 'block'
+      this.#categories.length ? select.style.display = 'block' : select.style.display = 'none'
     })
 
     openCategory.addEventListener('click', () => {

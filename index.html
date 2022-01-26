@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
@@ -48,12 +49,13 @@
     </div>
 
     <div class="manager-content" id="manager-content">
-      <form id="task-editor" class="manager-content__form">
+      <form class="manager-content__form" id="task-editor">
+        <select class="manager-content__form__field" id="get-categories" name="category"></select>
         <input type="text" class="manager-content__form__field" name="title" placeholder="ex: Meeting tomorrow 08:00 AM">
         <textarea class="manager-content__form__field" name="content" placeholder="Description"></textarea>
       </form>
 
-      <form id="category-editor" class="manager-content__form">
+      <form class="manager-content__form" id="category-editor">
         <input type="text" class="manager-content__form__field" name="title" placeholder="New category">
       </form>
 
@@ -69,9 +71,8 @@
     </figure>
   </main>
 
-  <script
-    defer
-    src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" 
+  <script defer
+    src="https://use.fontawesome.com/releases/v5.15.4/js/all.js"
     integrity="sha384-rOA1PnstxnOBLzCLMcre8ybwbTmemjzdNlILg8O7z1lUkLXozs4DHonlDtnE7fpc"
     crossorigin="anonymous"
   ></script>
