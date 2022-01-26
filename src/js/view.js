@@ -70,14 +70,18 @@ export default class View {
 
       form.reset()
 
-      this.categoryUI(this.#categories)
+      if(this.#categories) {
+        this.renderOptionCategories(this.#categories)
+        this.categoryUI(this.#categories)
+        this.filterByCategories()
+      }
     })
   }
 
   // create template html
   todoUI(todo, items) {
     const ui = todo.map(item => `
-      <li class="view__list__task" id="task-${item.id}">
+      <li class="view__list__task" id="task-${item.id}" ${item.category ? `data-category="${item.category}"` : ''}>
         <div class="view__list__task__checkbox">
           <input type="checkbox" class="view__list__task__checkbox__input" data-id="${item.id}" ${item.done ? 'checked' : ''}>
           <div class="view__list__task__checkbox__body">
@@ -115,14 +119,12 @@ export default class View {
   categoryUI(category) {
     const div = document.getElementById('category')
     const ui = category.map(item => `
-      <span class="view__categorie__category" data-id="${item.id}">
+      <a href="#!" class="view__categorie__category" data-id="${item.id}" data-category="${item.title}">
         ${item.title}
-      </span>
+      </a>
     `).join('')
 
     div.innerHTML = ui
-
-    if(category) this.renderOptionCategories(category)
   }
 
   // check task as done or undone
@@ -148,21 +150,20 @@ export default class View {
     const nodes = this.#items.querySelectorAll('.view__list__task__delete--delete')
 
     nodes.forEach(el => el.addEventListener('click', () => {
-      const li = el.parentNode
       const id = el.getAttribute('data-id')
 
       this.#todolist.splice(this.#todolist.indexOf(el => el.id == id), 1)
       this.updateCount(this.#todolist)
       this.filterUI()
       this.figure()
-      li.parentNode.remove()
+      el.parentNode.parentNode.remove()
     }))
   }
 
   // set current date
   setDate() {
     const date = new Date()
-    const setDate = document.getElementById('view__header__title')
+    const setDate = document.getElementById('title')
 
     setDate.innerHTML = `
       Today ${date.getDate()} <span id="date">${this.#days[date.getDay()]} - ${this.#months[date.getMonth()]}</span>
@@ -170,8 +171,8 @@ export default class View {
   }
 
   // set total of tasks
-  updateCount(todo) {
-    return document.getElementById('count').innerHTML = `${todo.length} tasks`
+  updateCount(todos) {
+    return document.getElementById('count').innerHTML = `${todos.length} tasks`
   }
 
   // create template html
@@ -192,7 +193,7 @@ export default class View {
     this.#filter.innerHTML = ui
 
     this.activeFilter()
-    this.filter()
+    this.filterByActive()
   }
 
   // set class active 
@@ -212,8 +213,22 @@ export default class View {
     }))
   }
 
-  // filter tasks NEED REFACTORING
-  filter() {
+  //filter by categories
+  filterByCategories() {
+    const nodes = document.querySelectorAll('.view__categorie__category')
+
+    nodes.forEach(el => el.addEventListener('click', () => {
+      const dataCategory = el.getAttribute('data-category')
+      const li = this.#items.querySelectorAll('li')
+      
+      li.forEach(el => {
+        el.getAttribute('data-category') === dataCategory ? el.style.display = 'flex' : el.style.display = 'none'
+      })
+    }))
+  }
+
+  // filter by tasks
+  filterByActive() {
     const nodes = document.querySelectorAll('.view__filter__filtered')
 
     nodes.forEach(el => el.addEventListener('click', () => {
