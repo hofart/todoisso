@@ -16,9 +16,15 @@
     <div class="view">
       <div class="view__header">
         <h1 id="title"></h1>
-        <form id="search">
-          <input type="search" name="search">
-        </form>
+
+        <div class="view__search-bar">
+          <form id="search">
+            <input type="text" class="view__search-bar__field" name="task" placeholder="Search">
+            <button type="submit" class="view__search-bar__btn" id="search-task">
+              <i class="fa fa-search"></i>
+            </button>
+          </form>
+        </div>
       </div>
 
       <div class="view__filter">
