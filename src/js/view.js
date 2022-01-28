@@ -80,15 +80,44 @@ export default class View {
     this.#btnSeach.addEventListener('click', e => {
       const { task } = document.getElementById('search')
       const nodes = this.#items.querySelectorAll('li')
+      const filterTypes = this.#filterTypes.find(filter => filter.active == true)
 
       if (!task.value.trim()) return this.todoUI(this.#todolist, this.#items)
 
       nodes.forEach(el => {
         el.style.display = 'none'
 
-        for (const key of this.#todolist) {
-          const element = el.firstElementChild.lastElementChild.firstElementChild.textContent
-          key.title.includes(task.value) && element == key.title ? el.style.display = 'flex' : ''
+        if (filterTypes.param == 'all') {
+          for (const key of this.#todolist) {
+            const element = el.firstElementChild.lastElementChild.firstElementChild.textContent
+            key.title.includes(task.value) && element == key.title ? el.style.display = 'flex' : ''
+          }
+        }
+
+        if (filterTypes.param == 'active') {
+          const inputs = this.#items.querySelectorAll('.view__list__task__checkbox__input')
+  
+          for (const key of this.#todolist) {
+            inputs.forEach(input => {
+              if (!input.checked) {
+                const element = input.parentNode.lastElementChild.firstElementChild.textContent
+                key.title.includes(task.value) && key.title == element ? input.parentNode.parentNode.style.display = 'flex' : ''
+              }
+            })
+          }
+        }
+
+        if (filterTypes.param == 'completed') {
+          const inputs = this.#items.querySelectorAll('.view__list__task__checkbox__input')
+  
+          for (const key of this.#todolist) {
+            inputs.forEach(input => {
+              if (input.checked) {
+                const element = input.parentNode.lastElementChild.firstElementChild.textContent
+                key.title.includes(task.value) && key.title == element ? input.parentNode.parentNode.style.display = 'flex' : ''
+              }
+            })
+          }
         }
       })
 
@@ -238,9 +267,7 @@ export default class View {
       const dataCategory = el.getAttribute('data-category')
       const li = this.#items.querySelectorAll('li')
 
-      li.forEach(el => {
-        el.getAttribute('data-category') === dataCategory ? el.style.display = 'flex' : el.style.display = 'none'
-      })
+      li.forEach(el => el.getAttribute('data-category') === dataCategory ? el.style.display = 'flex' : el.style.display = 'none')
     }))
   }
 
