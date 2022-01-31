@@ -24,6 +24,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 10px;
   margin-top: .5rem;
 }
 
@@ -32,7 +33,9 @@
 }
 
 .view__filter__filtered {
+  background-color: var(--color-gray-2);
   padding: .2rem .5rem;
+  border-radius: 10px;
   font-size: .9rem;
 }
 
@@ -166,7 +169,7 @@
 }
 
 .view__categorie__category {
-  background-color: var(--color-red);
+  background-color: var(--color-gray-2);
   border-radius: 10px;
   padding: .2rem .5rem;
   color: white;

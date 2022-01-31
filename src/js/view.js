@@ -7,7 +7,6 @@ export default class View {
   #items = document.getElementById('items')
   #btnAdd = document.getElementById('add-task')
   #btnCategory = document.getElementById('add-category')
-  #btnSeach = document.getElementById('search-task')
   #empty = document.getElementById('empty-figure')
   #filter = document.getElementById('wrapper-filter')
 
@@ -39,16 +38,12 @@ export default class View {
       form.reset()
 
       if (this.#todolist) {
-        this.#items.style.display = 'block'
-        // calling methods
         this.todoUI(this.#todolist, this.#items)
         this.deleteTask()
         this.doneOrUndone()
         this.updateCount(this.#todolist)
         this.figure()
         this.filterUI()
-      } else {
-        this.#items.style.display = 'none'
       }
     })
   }
@@ -63,71 +58,23 @@ export default class View {
 
       this.#categories.push({
         title: title.value,
-        id: Math.floor(Math.random() * 9999)
+        id: Math.floor(Math.random() * 9999),
+        active: false
       })
 
       form.reset()
 
       if (this.#categories) {
-        this.renderOptionCategories(this.#categories)
+        this.selectUI(this.#categories)
         this.categoryUI(this.#categories)
         this.filterByCategories()
       }
     })
   }
 
-  searchTask() {
-    this.#btnSeach.addEventListener('click', e => {
-      const { task } = document.getElementById('search')
-      const nodes = this.#items.querySelectorAll('li')
-      const filterTypes = this.#filterTypes.find(filter => filter.active == true)
-
-      if (!task.value.trim()) return this.todoUI(this.#todolist, this.#items)
-
-      nodes.forEach(el => {
-        el.style.display = 'none'
-
-        if (filterTypes.param == 'all') {
-          for (const key of this.#todolist) {
-            const element = el.firstElementChild.lastElementChild.firstElementChild.textContent
-            key.title.includes(task.value) && element == key.title ? el.style.display = 'flex' : ''
-          }
-        }
-
-        if (filterTypes.param == 'active') {
-          const inputs = this.#items.querySelectorAll('.view__list__task__checkbox__input')
-  
-          for (const key of this.#todolist) {
-            inputs.forEach(input => {
-              if (!input.checked) {
-                const element = input.parentNode.lastElementChild.firstElementChild.textContent
-                key.title.includes(task.value) && key.title == element ? input.parentNode.parentNode.style.display = 'flex' : ''
-              }
-            })
-          }
-        }
-
-        if (filterTypes.param == 'completed') {
-          const inputs = this.#items.querySelectorAll('.view__list__task__checkbox__input')
-  
-          for (const key of this.#todolist) {
-            inputs.forEach(input => {
-              if (input.checked) {
-                const element = input.parentNode.lastElementChild.firstElementChild.textContent
-                key.title.includes(task.value) && key.title == element ? input.parentNode.parentNode.style.display = 'flex' : ''
-              }
-            })
-          }
-        }
-      })
-
-      e.preventDefault()
-    })
-  }
-
   // create template html
   todoUI(todo, items) {
-    const ui = todo.map(item => `
+    items.innerHTML = todo.map(item => `
       <li class="view__list__task" id="task-${item.id}" ${item.category ? `data-category="${item.category}"` : ''}>
         <div class="view__list__task__checkbox">
           <input type="checkbox" class="view__list__task__checkbox__input" data-id="${item.id}" ${item.done ? 'checked' : ''}>
@@ -145,33 +92,70 @@ export default class View {
         </div>
       </li>
     `).join('')
+    }
 
-    items.innerHTML = ui
-  }
-
-  renderOptionCategories(category) {
-    const select = document.getElementById('get-categories')
-    const ui = `
-      <select class="manager-content__form__field" id="get-categories" name="category">
-        <option value="" selected disable>Category</option>
-        ${category.map(item => `
-          <option value="${item.title}">${item.title}</option>
-        `)}
-      </select>
-    `
-
-    select.innerHTML = ui
-  }
-
+  // create template html for categories
   categoryUI(category) {
-    const div = document.getElementById('category')
-    const ui = category.map(item => `
-      <a href="#!" class="view__categorie__category" data-id="${item.id}" data-category="${item.title}">
+    document.getElementById('category').innerHTML = category.map(item => `
+      <a href="#!" 
+        class="view__categorie__category ${item.active ? 'is--active' : ''}" 
+        data-id="${item.id}" 
+        data-category="${item.title}" 
+        data-active="${item.active}"
+      >
         ${item.title}
       </a>
     `).join('')
 
-    div.innerHTML = ui
+    this.filterByCategories()
+  }
+
+  // render option of categories
+  selectUI(category) {
+    document.getElementById('get-categories').innerHTML = `
+      <select class="manager-content__form__field" id="get-categories" name="category">
+        <option value="" selected disable>Category</option>
+        ${category.map(item => `<option value="${item.title}">${item.title}</option>`)}
+      </select>
+    `
+  }
+
+  // create filter template html
+  filterUI() {
+    !this.#todolist.length ? this.#filter.style.display = 'none' : null
+
+    this.#filter.innerHTML = this.#filterTypes.map(item => `
+      <a
+        href="#!" 
+        class="view__filter__filtered ${item.active ? 'is--active' : ''}"
+        data-param="${item.param}" 
+        data-status="${item.active}"
+      >
+        ${item.name}
+      </a>
+    `).join('')
+
+    this.activeFilter()
+    this.filterByActive()
+  }
+
+  // search tasks and more
+  searchTask() {
+    const input = document.getElementById('search')
+
+    input.addEventListener('input', e => {
+      const value = e.target.value
+      const nodes = this.#items.querySelectorAll('li')
+
+      nodes.forEach(el => {
+        const textNode = el.firstElementChild.lastElementChild.firstElementChild.textContent
+        el.style.display = 'none'
+
+        this.#todolist.forEach(todo => {
+          todo.title.includes(value) && textNode === todo.title ? el.style.display = 'flex' : ''
+        })
+      })
+    })
   }
 
   // check task as done or undone
@@ -222,33 +206,13 @@ export default class View {
     return document.getElementById('count').innerHTML = `${todos.length} tasks`
   }
 
-  // create template html
-  filterUI() {
-    !this.#todolist.length ? this.#filter.style.display = 'none' : this.#filter.style.display = 'block'
-
-    const ui = this.#filterTypes.map(item => `
-      <a
-        href="#!" 
-        class="view__filter__filtered ${item.active ? 'is--active' : ''}"
-        data-param="${item.param}" 
-        data-status="${item.active}"
-      >
-        ${item.name}
-      </a>
-    `).join('')
-
-    this.#filter.innerHTML = ui
-    this.activeFilter()
-    this.filterByActive()
-  }
-
   // set class active
   activeFilter() {
     const nodes = document.querySelectorAll('.view__filter__filtered')
 
     nodes.forEach(el => el.addEventListener('click', () => {
       const dataParam = el.getAttribute('data-param')
-      const type = this.#filterTypes.find(i => i.param == dataParam)
+      const type = this.#filterTypes.find(item => item.param == dataParam)
 
       for (let key of this.#filterTypes) {
         key.active = false
@@ -265,9 +229,17 @@ export default class View {
 
     nodes.forEach(el => el.addEventListener('click', () => {
       const dataCategory = el.getAttribute('data-category')
+      const category = this.#categories.find(item => item.title === dataCategory)
       const li = this.#items.querySelectorAll('li')
 
+      for (let key of this.#categories) {
+        key.active = false
+        key.title === category.title ? key.active = true : null
+      }
+      
       li.forEach(el => el.getAttribute('data-category') === dataCategory ? el.style.display = 'flex' : el.style.display = 'none')
+
+      this.categoryUI(this.#categories)
     }))
   }
 
@@ -278,7 +250,7 @@ export default class View {
     nodes.forEach(el => el.addEventListener('click', () => {
       const dataParam = el.getAttribute('data-param')
       const li = this.#items.querySelectorAll('li')
-
+      
       if (dataParam == 'all') {
         li.forEach(el => el.style.display = 'flex')
       }

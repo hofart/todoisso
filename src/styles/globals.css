@@ -62,7 +62,11 @@ small {
 
 .is--active {
   border-radius: 10px;
-  background-color: var(--color-red);
+  background-color: var(--color-red)!important;
+}
+
+.hide {
+  display: none;
 }
 
 /* Principal content */
