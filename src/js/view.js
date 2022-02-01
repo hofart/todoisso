@@ -1,5 +1,5 @@
 export default class View {
-  constructor() {}
+  constructor() { }
 
   #todolist = []
   #categories = []
@@ -92,7 +92,7 @@ export default class View {
         </div>
       </li>
     `).join('')
-    }
+  }
 
   // create template html for categories
   categoryUI(category) {
@@ -136,26 +136,7 @@ export default class View {
     `).join('')
 
     this.activeFilter()
-    this.filterByActive()
-  }
-
-  // search tasks and more
-  searchTask() {
-    const input = document.getElementById('search')
-
-    input.addEventListener('input', e => {
-      const value = e.target.value
-      const nodes = this.#items.querySelectorAll('li')
-
-      nodes.forEach(el => {
-        const textNode = el.firstElementChild.lastElementChild.firstElementChild.textContent
-        el.style.display = 'none'
-
-        this.#todolist.forEach(todo => {
-          todo.title.includes(value) && textNode === todo.title ? el.style.display = 'flex' : ''
-        })
-      })
-    })
+    this.filterByStatus()
   }
 
   // check task as done or undone
@@ -212,7 +193,7 @@ export default class View {
 
     nodes.forEach(el => el.addEventListener('click', () => {
       const dataParam = el.getAttribute('data-param')
-      const type = this.#filterTypes.find(item => item.param == dataParam)
+      const type = this.#filterTypes.find(item => item.param === dataParam)
 
       for (let key of this.#filterTypes) {
         key.active = false
@@ -231,44 +212,69 @@ export default class View {
       const dataCategory = el.getAttribute('data-category')
       const category = this.#categories.find(item => item.title === dataCategory)
       const li = this.#items.querySelectorAll('li')
+      const inputSearch = document.getElementById('search').value
 
       for (let key of this.#categories) {
         key.active = false
         key.title === category.title ? key.active = true : null
       }
-      
+
       li.forEach(el => el.getAttribute('data-category') === dataCategory ? el.style.display = 'flex' : el.style.display = 'none')
 
+      this.filters(li, inputSearch, null, category.title)
       this.categoryUI(this.#categories)
     }))
   }
 
   // filter by tasks
-  filterByActive() {
+  filterByStatus() {
     const nodes = document.querySelectorAll('.view__filter__filtered')
 
     nodes.forEach(el => el.addEventListener('click', () => {
       const dataParam = el.getAttribute('data-param')
       const li = this.#items.querySelectorAll('li')
-      
-      if (dataParam == 'all') {
-        li.forEach(el => el.style.display = 'flex')
-      }
+      const inputSearch = document.getElementById('search').value
 
-      if (dataParam == 'active') {
-        li.forEach(el => {
-          const active = el.firstElementChild.lastElementChild.firstElementChild
-          active.classList.contains('is--done') ? el.style.display = 'none' : el.style.display = 'flex'
-        })
-      }
-
-      if (dataParam == 'completed') {
-        li.forEach(el => {
-          const completed = el.firstElementChild.lastElementChild.firstElementChild
-          completed.classList.contains('is--done') ? el.style.display = 'flex' : el.style.display = 'none'
-        })
-      }
+      this.filters(li, inputSearch, dataParam, null)
     }))
+  }
+
+  // search tasks and more
+  searchTask() {
+    const input = document.getElementById('search')
+
+    input.addEventListener('input', e => {
+      const value = e.target.value
+      const isActive = document.querySelector('.is--active').getAttribute('data-param')
+
+      this.filters(this.#items.querySelectorAll('li'), value, isActive, null)
+    })
+  }
+
+  // considering search bar when filter tasks   
+  filters(li, value, param, category) {
+    li.forEach(el => {
+      const textNode = el.firstElementChild.lastElementChild.firstElementChild.textContent
+      const titleNode = el.firstElementChild.lastElementChild.firstElementChild
+      const dataCategory = el.getAttribute('data-category')
+      const isDone = titleNode.classList.contains('is--done')
+      
+      el.style.display = 'none'
+
+      this.#todolist.forEach(todo => {
+        if (todo.title.includes(value) && textNode === todo.title) {
+          el.style.display = 'flex'
+        }
+
+        if (todo.title.includes(value) && textNode === todo.title && isDone && param === 'active') {
+          el.style.display = 'none'
+        }
+
+        if (todo.title.includes(value) && textNode === todo.title && !isDone && param === 'completed') {
+          el.style.display = 'none'
+        }
+      })
+    })
   }
 
   // show img with dont have task
@@ -313,7 +319,7 @@ export default class View {
       openCategory.style.opacity = '1'
     })
   }
-  
+
   _init() {
     this.addNewTask()
     this.addNewCategory()

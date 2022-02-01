@@ -176,17 +176,11 @@
 }
 
 /* input search */
-#search {
-  width: 100%;
-  position: relative;
-  display: flex;
-}
-
 .view__search-bar__field {
-  width: 100%;
+  width: 194px;
   border: none;
   padding: 5px;
-  height: 35px;
+  height: 30px;
   border-radius: 4px;
   background-color: var(--color-gray-2);
 }
