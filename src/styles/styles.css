@@ -186,8 +186,8 @@
   width: 100%;
   border: none;
   padding: 5px;
-  height: 20px;
-  border-radius: 4px 0 0 4px;
+  height: 35px;
+  border-radius: 4px;
   background-color: var(--color-gray-2);
 }
 
