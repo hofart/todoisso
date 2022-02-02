@@ -19,10 +19,6 @@ export default class View {
     { name: 'Completed', param: 'completed', active: false }
   ]
 
-  /**
-   * @description add new task
-   */
-
   addNewTask() {
     this.#btnAdd.addEventListener('click', () => {
       const form = document.getElementById('task-editor')
@@ -51,10 +47,6 @@ export default class View {
     })
   }
 
-  /**
-   * @description add new category
-   */
-
   addNewCategory() {
     this.#btnCategory.addEventListener('click', () => {
       const form = document.getElementById('category-editor')
@@ -81,8 +73,8 @@ export default class View {
   /**
    * @description create template html of todolist
    * @param {Array<object>} todo
-   * @param {HTMLUL} items
-   * @returns {HTMLUListElement} list of itens
+   * @param {HTMLElement} items
+   * @returns {HTMLUListElement} create li of tasks
    */
 
   todoUI(todo, items) {
@@ -96,7 +88,6 @@ export default class View {
             ${item.category ? `<small>Category: ${item.category}</small>` : ''}
           </div>
         </div>
-
         <div class="view__list__task__delete">
           <a href="#!" class="view__list__task__delete--delete" data-id="${item.id}">
             <i class="far fa-trash-alt"></i>
@@ -106,10 +97,10 @@ export default class View {
     `).join('')
   }
 
-  /**
-   * @description create template html for categories
+   /**
+   * @description create buttons for categories
    * @param {Array<object>} category
-   * @returns {HTMLAnchorElement} btn for categories
+   * @returns {HTMLAnchorElement} buttons
    */
 
   categoryUI(category) {
@@ -128,11 +119,11 @@ export default class View {
   }
 
   /**
-   * @description render option of categories
+   * @description render option of select categories
    * @param {Array<object>} category
    * @returns {HTMLOptionElement} render option when i created categories
    */
-  
+
   selectUI(category) {
     document.getElementById('get-categories').innerHTML = `
       <select class="manager-content__form__field" id="get-categories" name="category">
@@ -141,11 +132,6 @@ export default class View {
       </select>
     `
   }
-
-  /**
-   * @description create filter template html
-   * @returns {HTMLAnchorElement}
-   */
 
   filterUI() {
     !this.#todolist.length ? this.#filter.style.display = 'none' : null
@@ -165,10 +151,6 @@ export default class View {
     this.filterByStatus()
   }
 
-  /**
-   * @description check task as done or undone
-   */
-
   doneOrUndone() {
     const nodes = this.#items.querySelectorAll('.view__list__task__checkbox__input')
 
@@ -186,10 +168,6 @@ export default class View {
     }))
   }
 
-  /**
-   * @description delete an item from array
-   */
-
   deleteTask() {
     const nodes = this.#items.querySelectorAll('.view__list__task__delete--delete')
 
@@ -204,10 +182,6 @@ export default class View {
     }))
   }
 
-  /**
-   * @description set current date
-   */
-
   setDate() {
     const date = new Date()
     const setDate = document.getElementById('title')
@@ -217,19 +191,9 @@ export default class View {
     `
   }
 
-  /**
-   * @description set total of tasks
-   * @param {Array<object>} todos
-   * @returns {length} total count
-   */
-
   updateCount(todos) {
     return document.getElementById('count').innerHTML = `${todos.length} tasks`
   }
-
-  /**
-   * @description set class active
-   */
 
   activeFilter() {
     const nodes = document.querySelectorAll('.view__filter__filtered')
@@ -247,10 +211,6 @@ export default class View {
     }))
   }
 
-  /**
-   * @description filter by categories
-   */
-
   filterByCategories() {
     const nodes = document.querySelectorAll('.view__categorie__category')
 
@@ -258,6 +218,7 @@ export default class View {
       const dataCategory = el.getAttribute('data-category')
       const category = this.#categories.find(item => item.title === dataCategory)
       const li = this.#items.querySelectorAll('li')
+      const inputSearch = document.getElementById('search').value
 
       for (let key of this.#categories) {
         key.active = false
@@ -266,29 +227,23 @@ export default class View {
 
       li.forEach(el => el.getAttribute('data-category') === dataCategory ? el.style.display = 'flex' : el.style.display = 'none')
 
+      this.filters(li, inputSearch, null, category.title)
       this.categoryUI(this.#categories)
     }))
   }
-
-  /**
-   * @description filter by tasks
-   */
 
   filterByStatus() {
     const nodes = document.querySelectorAll('.view__filter__filtered')
 
     nodes.forEach(el => el.addEventListener('click', () => {
       const dataParam = el.getAttribute('data-param')
-      const li = this.#items.querySelectorAll('li')
       const inputSearch = document.getElementById('search').value
+      const li = this.#items.querySelectorAll('li')
+      const category = this.#categories.find(item => item.active === true)
 
-      this.filters(li, inputSearch, dataParam, null)
+      this.filters(li, inputSearch, dataParam, category)
     }))
   }
-
-  /**
-   * @description search tasks and more
-   */
 
   searchTask() {
     const input = document.getElementById('search')
@@ -296,27 +251,27 @@ export default class View {
     input.addEventListener('input', e => {
       const value = e.target.value
       const li = this.#items.querySelectorAll('li')
-      const isActive = document.querySelector('.is--active').getAttribute('data-param')
+      const filterStatus = this.#filterTypes.find(item => item.active === true)
+      const category = this.#categories.find(item => item.active === true)
 
-      this.filters(li, value, isActive, null)
+      this.filters(li, value, filterStatus.param, category)
     })
   }
 
   /**
    * @description considering search bar when filter tasks
    * @param {HTMLLIElement} li
-   * @param {string} value
-   * @param {string} param
-   * @param {string} category
+   * @param {String} value
+   * @param {String} param
+   * @param {String} category
    */
-
+  
   filters(li, value, param, category) {
     li.forEach(el => {
       const textNode = el.firstElementChild.lastElementChild.firstElementChild.textContent
       const titleNode = el.firstElementChild.lastElementChild.firstElementChild
+      const dataCategory = el.getAttribute('data-category')
       const isDone = titleNode.classList.contains('is--done')
-
-      console.log(category)
 
       el.style.display = 'none'
 
@@ -336,18 +291,9 @@ export default class View {
     })
   }
 
-  /**
-   * @description show or hide element if have task
-   * @returns {HTMLElement}
-   */
-
   figure() {
     return this.#todolist.length < 1 ? this.#empty.style.display = 'block' : this.#empty.style.display = 'none'
   }
-
-  /**
-   * @description when click button to signup new task, control divs
-   */
 
   toggleManagerContent() {
     const btnOpen = document.getElementById('open')
