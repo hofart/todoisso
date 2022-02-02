@@ -81,7 +81,7 @@ export default class View {
   /**
    * @description create template html of todolist
    * @param {Array<object>} todo
-   * @param {ul} items
+   * @param {HTMLUL} items
    * @returns {HTMLUListElement} list of itens
    */
 
