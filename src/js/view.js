@@ -217,6 +217,7 @@ export default class View {
     nodes.forEach(el => el.addEventListener('click', () => {
       const dataCategory = el.getAttribute('data-category')
       const category = this.#categories.find(item => item.title === dataCategory)
+      const filterStatus = this.#filterTypes.find(item => item.active === true)
       const li = this.#items.querySelectorAll('li')
       const inputSearch = document.getElementById('search').value
 
@@ -225,9 +226,7 @@ export default class View {
         key.title === category.title ? key.active = true : null
       }
 
-      li.forEach(el => el.getAttribute('data-category') === dataCategory ? el.style.display = 'flex' : el.style.display = 'none')
-
-      this.filters(li, inputSearch, null, category.title)
+      this.filters(li, inputSearch, filterStatus.param, category.title)
       this.categoryUI(this.#categories)
     }))
   }
@@ -261,24 +260,33 @@ export default class View {
   /**
    * @description considering search bar when filter tasks
    * @param {HTMLLIElement} li
-   * @param {String} value
-   * @param {String} param
-   * @param {String} category
+   * @param {String} value from seacrch bar
+   * @param {String} param from filterStatus
+   * @param {String} category from category
    */
   
   filters(li, value, param, category) {
     li.forEach(el => {
       const textNode = el.firstElementChild.lastElementChild.firstElementChild.textContent
       const titleNode = el.firstElementChild.lastElementChild.firstElementChild
-      const dataCategory = el.getAttribute('data-category')
       const isDone = titleNode.classList.contains('is--done')
 
-      el.style.display = 'none'
-
       this.#todolist.forEach(todo => {
-        if (todo.title.includes(value) && textNode === todo.title) {
-          el.style.display = 'flex'
+        if (!todo.title.includes(value) && textNode === todo.title) {
+          el.classList.add('hide')
+        } else {
+          el.classList.remove('hide')
         }
+
+
+        /* if (todo.title.includes(value) && textNode === todo.title) {
+          if (category) {
+            category.title === el.getAttribute('data-category') ? el.style.display = 'flex' : el.style.display = 'none'
+          } else {
+            el.style.display = 'flex'
+          }
+          el.classList.remove('hide')
+        } 
 
         if (todo.title.includes(value) && textNode === todo.title && isDone && param === 'active') {
           el.style.display = 'none'
@@ -286,7 +294,7 @@ export default class View {
 
         if (todo.title.includes(value) && textNode === todo.title && !isDone && param === 'completed') {
           el.style.display = 'none'
-        }
+        } */
       })
     })
   }
