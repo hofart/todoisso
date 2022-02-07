@@ -264,8 +264,50 @@ export default class View {
    * @param {String} param from filterStatus
    * @param {String} category from category
    */
-  
+
   filters(li, value, param, category) {
+    this.#todolist.forEach(todo => {
+      const isDone = todo.done === true
+
+      if (param === 'all') {
+        if (category) {
+          if (todo.category !== category.title) {
+            console.log(todo)
+          }
+        } else {
+          if (!todo.title.includes(value)) {
+            console.log(todo)
+          }
+        }
+      }
+
+      if (param === 'active') {
+        if (category) {
+          if (todo.category !== category.title && isDone) {
+            console.log(todo)
+          }
+        } else {
+          if (!todo.title.includes(value)) {
+            console.log(todo)
+          }
+        }
+      }
+
+      if (param === 'completed') {
+        if (category) {
+          if (todo.category !== category.title && !isDone) {
+            console.log(todo)
+          }
+        } else {
+          if (!todo.title.includes(value)) {
+            console.log(todo)
+          }
+        }
+      } 
+    })
+  }
+
+  /* filters(li, value, param, category) {
     li.forEach(el => {
       const textNode = el.firstElementChild.lastElementChild.firstElementChild.textContent
       const titleNode = el.firstElementChild.lastElementChild.firstElementChild
@@ -273,11 +315,16 @@ export default class View {
 
       this.#todolist.forEach(todo => {
         if (!todo.title.includes(value) && textNode === todo.title) {
-          el.classList.add('hide')
-        } else {
-          el.classList.remove('hide')
+          console.log(todo)
         }
 
+        /* if (param === 'active') {
+          todo.title.includes(value) && textNode === todo.title && isDone ? el.classList.add('hide') : el.classList.remove('hide')
+        }
+
+        if (param === 'completed') {
+          todo.title.includes(value) && textNode === todo.title && !isDone ? el.classList.add('hide') : el.classList.remove('hide')
+        } */
 
         /* if (todo.title.includes(value) && textNode === todo.title) {
           if (category) {
@@ -294,10 +341,10 @@ export default class View {
 
         if (todo.title.includes(value) && textNode === todo.title && !isDone && param === 'completed') {
           el.style.display = 'none'
-        } */
+        }
       })
     })
-  }
+  } */
 
   figure() {
     return this.#todolist.length < 1 ? this.#empty.style.display = 'block' : this.#empty.style.display = 'none'
