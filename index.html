@@ -6,6 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TodoIsso -- Remember all your tasks every day without hassle.</title>
   <link rel="stylesheet" href="/src/styles/styles.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" 
+        integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
 </head>
 <body>
   <main role="main">
@@ -17,14 +19,19 @@
         </div>
       </div>
 
-      <div class="view__filter">
-        <p class="view__filter__count">
+      <div class="view__wrapper">
+        <p class="view__wrapper__count">
           <span id="count">0 tasks</span>
         </p>
-        <div class="view__filter" id="wrapper-filter"></div>
+        <div class="view__wrapper__manage">
+          <div class="view__wrapper__manage__filter" id="wrapper-filter"></div>
+          <a class="view__wrapper__manage__edit" id="menu">
+            <i class="fas fa-bars"></i> menu
+          </a>
+        </div>
       </div>
       <div class="view__categories" id="category"></div>
-      <ul class="view__list" id="items"></ul>
+      <ul class="view__list" id="todo"></ul>
     </div>
 
     <div class="create-content">
@@ -49,7 +56,7 @@
 
     <div class="manager-content" id="manager-content">
       <form class="manager-content__form" id="task-editor">
-        <select class="manager-content__form__field" id="get-categories" name="category"></select>
+        <select class="manager-content__form__custom-select" id="get-categories" name="category"></select>
         <input type="text" class="manager-content__form__field" name="title" placeholder="ex: Meeting tomorrow 08:00 AM">
         <textarea class="manager-content__form__field" name="content" placeholder="Description"></textarea>
       </form>
@@ -57,6 +64,8 @@
       <form class="manager-content__form" id="category-editor">
         <input type="text" class="manager-content__form__field" name="title" placeholder="New category">
       </form>
+
+      <div id="edit-category"></div>
 
       <div class="btn-group">
         <button class="btn btn--primary" id="add-task">Create Task</button>
@@ -69,12 +78,6 @@
       <img src="./src/assets/empty.svg" class="empty__img" id="empty-figure" alt="empty">
     </figure>
   </main>
-
-  <script defer
-    src="https://use.fontawesome.com/releases/v5.15.4/js/all.js"
-    integrity="sha384-rOA1PnstxnOBLzCLMcre8ybwbTmemjzdNlILg8O7z1lUkLXozs4DHonlDtnE7fpc"
-    crossorigin="anonymous"
-  ></script>
   <script defer type="module" src="index.js"></script>
 </body>
 </html>

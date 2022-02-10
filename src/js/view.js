@@ -4,9 +4,10 @@ export default class View {
   #todolist = []
   #categories = []
 
-  #items = document.getElementById('items')
+  #items = document.getElementById('todo')
   #btnAdd = document.getElementById('add-task')
   #btnCategory = document.getElementById('add-category')
+  #btnMenu = document.getElementById('menu')
   #empty = document.getElementById('empty-figure')
   #filter = document.getElementById('wrapper-filter')
 
@@ -66,6 +67,9 @@ export default class View {
         this.selectUI(this.#categories)
         this.categoryUI(this.#categories)
         this.filterByCategories()
+        this.deleteCategory()
+        this.menu()
+        this.editCategoryUI()
       }
     })
   }
@@ -127,7 +131,7 @@ export default class View {
   selectUI(category) {
     document.getElementById('get-categories').innerHTML = `
       <select class="manager-content__form__field" id="get-categories" name="category">
-        <option value="" selected disable>Category</option>
+        <option selected disable>Category</option>
         ${category.map(item => `<option value="${item.title}">${item.title}</option>`)}
       </select>
     `
@@ -149,6 +153,25 @@ export default class View {
 
     this.activeFilter()
     this.filterByStatus()
+  }
+
+  editCategoryUI() {
+    document.getElementById('edit-category').innerHTML = `
+      <h4>Categories:</h4>
+      <ul class="edit-category">
+        ${this.#categories.map(item => `
+          <li class="edit-category__category" data-id="${item.id}">
+            <div class="edit-category__category"__title">
+              ${item.title}
+            </div>
+            <div class="edit-category__category__icon">
+              <a href="#!"><i class="fas fa-pen"></i></a>
+              <a href="#!"><i class="fas fa-trash-alt"></i></a>
+            </div>
+          </li>
+        `).join('')}
+      </ul>
+    `
   }
 
   doneOrUndone() {
@@ -180,6 +203,10 @@ export default class View {
       this.figure()
       el.parentNode.parentNode.remove()
     }))
+  }
+
+  deleteCategory() {
+    const nodes = document.querySelectorAll('.view__categorie__category')
   }
 
   setDate() {
@@ -303,7 +330,7 @@ export default class View {
             console.log(todo)
           }
         }
-      } 
+      }
     })
   }
 
@@ -350,6 +377,26 @@ export default class View {
     return this.#todolist.length < 1 ? this.#empty.style.display = 'block' : this.#empty.style.display = 'none'
   }
 
+  menu() {
+    const managerContent = document.getElementById('manager-content')
+    const formCategory = document.getElementById('category-editor')
+    const openCategory = document.getElementById('open-category')
+    const btnOpen = document.getElementById('open')
+
+    !this.#categories.length ? this.#btnMenu.classList.add('hide') : this.#btnMenu.classList.remove('hide')
+
+    this.#btnMenu.addEventListener('click', () => {
+      managerContent.style.display = 'block'
+      formCategory.style.display = 'none'
+      this.#btnCategory.style.display = 'none'
+      this.#empty.style.display = 'none'
+      btnOpen.style.opacity = '0'
+      openCategory.style.opacity = '0'
+
+      this.editCategoryUI()
+    })
+  }
+
   toggleManagerContent() {
     const btnOpen = document.getElementById('open')
     const btnClose = document.getElementById('close')
@@ -358,6 +405,7 @@ export default class View {
     const formTask = document.getElementById('task-editor')
     const formCategory = document.getElementById('category-editor')
     const select = document.getElementById('get-categories')
+    const editCategories = document.getElementById('edit-category')
 
     btnOpen.addEventListener('click', () => {
       managerContent.style.display = 'block'
@@ -368,6 +416,8 @@ export default class View {
       this.#btnCategory.style.display = 'none'
       this.#btnAdd.style.display = 'block'
       this.#categories.length ? select.style.display = 'block' : select.style.display = 'none'
+      this.#empty.style.display = 'none'
+      editCategories.style.display = 'none'
     })
 
     openCategory.addEventListener('click', () => {
@@ -378,12 +428,15 @@ export default class View {
       formCategory.style.display = 'flex'
       this.#btnAdd.style.display = 'none'
       this.#btnCategory.style.display = 'block'
+      this.#empty.style.display = 'none'
+      editCategories.style.display = 'block'
     })
 
     btnClose.addEventListener('click', () => {
       managerContent.style.display = 'none'
       btnOpen.style.opacity = '1'
       openCategory.style.opacity = '1'
+      this.#empty.style.display = 'block'
     })
   }
 
@@ -394,5 +447,6 @@ export default class View {
     this.toggleManagerContent()
     this.figure()
     this.searchTask()
+    this.menu()
   }
 }

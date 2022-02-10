@@ -12,6 +12,7 @@
   justify-content: space-between;
   align-items: center;
   position: relative;
+  padding-bottom: 1rem;
 }
 
 .view__header__title {
@@ -20,22 +21,65 @@
 }
 
 /* filter */
-.view__filter {
+.view__wrapper {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 10px;
-  margin-top: .5rem;
 }
 
-.view__filter__count {
+.view__wrapper__count {
   color: var(--color-gray-1);
+}
+
+.view__wrapper__manage,
+.view__wrapper__manage__filter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.view__wrapper__manage__edit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.view__wrapper__manage__edit {
+  color: var(--color-gray-1);
+  font-size: .85rem;
+  font-weight: 800;
+  cursor: pointer;
 }
 
 .view__filter__filtered {
   background-color: var(--color-gray-2);
   padding: .2rem .5rem;
   border-radius: 10px;
+  font-size: .9rem;
+}
+
+/* edit category */
+
+.edit-category {
+  padding: 1rem 0;
+}
+
+.edit-category__category {
+  background-color: var(--color-black-3);
+  display: flex;
+  justify-content: space-between;
+  padding: .1rem 0;
+}
+
+.edit-category__category__icon {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.edit-category__category__icon i {
+  color: var(--color-gray-1);
   font-size: .9rem;
 }
 
@@ -198,7 +242,35 @@
   color: var(--color-gray-1);
   border-radius: 0 4px 4px 0;
   cursor: pointer;
-  font-size: 14px;
+  font-size: .9rem;
 }
 
-/* custom select */
+select {
+  /* Reset */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: 0;
+  outline: 0;
+
+  /* Personalize */
+  padding: .5rem;
+  background: url(https://upload.wikimedia.org/wikipedia/commons/9/9d/Caret_down_font_awesome_whitevariation.svg) no-repeat right 0.8em center/.9rem;
+  color: var(--color-gray-1);
+  cursor: pointer;
+  margin-left: 5px;
+  font-size: .9rem;
+}
+
+select option {
+  color: inherit;
+  background-color: var(--color-black-3);
+}
+
+select:focus {
+  outline: none;
+}
+
+select::-ms-expand {
+  display: none;
+}

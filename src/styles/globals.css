@@ -24,6 +24,12 @@ body {
   font-family: var(--font-primary);
   background-color: var(--color-black-2);
   height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+input, textarea {
+  font-family: var(--font-primary);
+  font-size: .9rem;
 }
 
 a {
@@ -80,6 +86,7 @@ main {
 @media (max-width: 767px) {
   main {
     padding: 1.5rem;
+    width: auto;
   }
 }
 
@@ -97,6 +104,7 @@ main {
   font-weight: 500;
   border-radius: 4px;
   cursor: pointer;
+  font-family: var(--font-primary);
 }
 
 .btn--primary {
