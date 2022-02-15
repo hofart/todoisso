@@ -68,8 +68,6 @@ export default class View {
         this.categoryUI(this.#categories)
         this.filterByCategories()
         this.deleteCategory()
-        this.menu()
-        this.editCategoryUI()
       }
     })
   }
@@ -155,25 +153,6 @@ export default class View {
     this.filterByStatus()
   }
 
-  editCategoryUI() {
-    document.getElementById('edit-category').innerHTML = `
-      <h4>Categories:</h4>
-      <ul class="edit-category">
-        ${this.#categories.map(item => `
-          <li class="edit-category__category" data-id="${item.id}">
-            <div class="edit-category__category"__title">
-              ${item.title}
-            </div>
-            <div class="edit-category__category__icon">
-              <a href="#!"><i class="fas fa-pen"></i></a>
-              <a href="#!"><i class="fas fa-trash-alt"></i></a>
-            </div>
-          </li>
-        `).join('')}
-      </ul>
-    `
-  }
-
   doneOrUndone() {
     const nodes = this.#items.querySelectorAll('.view__list__task__checkbox__input')
 
@@ -245,7 +224,6 @@ export default class View {
       const dataCategory = el.getAttribute('data-category')
       const category = this.#categories.find(item => item.title === dataCategory)
       const filterStatus = this.#filterTypes.find(item => item.active === true)
-      const li = this.#items.querySelectorAll('li')
       const inputSearch = document.getElementById('search').value
 
       for (let key of this.#categories) {
@@ -253,7 +231,7 @@ export default class View {
         key.title === category.title ? key.active = true : null
       }
 
-      this.filters(li, inputSearch, filterStatus.param, category.title)
+      this.filters(inputSearch, filterStatus.param, category.title)
       this.categoryUI(this.#categories)
     }))
   }
@@ -264,10 +242,9 @@ export default class View {
     nodes.forEach(el => el.addEventListener('click', () => {
       const dataParam = el.getAttribute('data-param')
       const inputSearch = document.getElementById('search').value
-      const li = this.#items.querySelectorAll('li')
       const category = this.#categories.find(item => item.active === true)
 
-      this.filters(li, inputSearch, dataParam, category)
+      this.filters(inputSearch, dataParam, category)
     }))
   }
 
@@ -276,11 +253,10 @@ export default class View {
 
     input.addEventListener('input', e => {
       const value = e.target.value
-      const li = this.#items.querySelectorAll('li')
       const filterStatus = this.#filterTypes.find(item => item.active === true)
       const category = this.#categories.find(item => item.active === true)
-
-      this.filters(li, value, filterStatus.param, category)
+      const hasCategory = category ?  category.title : false
+      this.filters(value, filterStatus.param, hasCategory)
     })
   }
 
@@ -292,46 +268,60 @@ export default class View {
    * @param {String} category from category
    */
 
-  filters(li, value, param, category) {
-    this.#todolist.forEach(todo => {
-      const isDone = todo.done === true
-
-      if (param === 'all') {
+  filters(value, param, category) {
+    if (param === 'all') {
+      for (const key of this.#todolist) {
         if (category) {
-          if (todo.category !== category.title) {
-            console.log(todo)
+          if (key.title.includes(value) && key.category === category) {
+            console.log('parametro all')
+            console.log('tem categoria')
+            console.log(key.title)
           }
         } else {
-          if (!todo.title.includes(value)) {
-            console.log(todo)
+          if (key.title.includes(value) && !key.category) {
+            console.log('parametro all')
+            console.log('não tem categoria')
+            console.log(key.title)
           }
         }
       }
+    }
 
-      if (param === 'active') {
+    if (param === 'active') {
+      for (const key of this.#todolist) {
         if (category) {
-          if (todo.category !== category.title && isDone) {
-            console.log(todo)
+          if (key.title.includes(value) && key.category === category && !key.done) {
+            console.log('parametro active')
+            console.log('tem categoria')
+            console.log(key.title)
           }
         } else {
-          if (!todo.title.includes(value)) {
-            console.log(todo)
+          if (key.title.includes(value) && !key.category && !key.done) {
+            console.log('parametro active')
+            console.log('não tem categoria')
+            console.log(key.title)
           }
         }
       }
+    }
 
-      if (param === 'completed') {
+    if (param === 'completed') {
+      for (const key of this.#todolist) {
         if (category) {
-          if (todo.category !== category.title && !isDone) {
-            console.log(todo)
+          if (key.title.includes(value) && key.category === category && key.done) {
+            console.log('parametro completed')
+            console.log('tem categoria')
+            console.log(key.title)
           }
         } else {
-          if (!todo.title.includes(value)) {
-            console.log(todo)
+          if (key.title.includes(value) && !key.category && key.done) {
+            console.log('parametro completed')
+            console.log('não tem categoria')
+            console.log(key.title)
           }
         }
       }
-    })
+    }
   }
 
   /* filters(li, value, param, category) {
@@ -377,26 +367,6 @@ export default class View {
     return this.#todolist.length < 1 ? this.#empty.style.display = 'block' : this.#empty.style.display = 'none'
   }
 
-  menu() {
-    const managerContent = document.getElementById('manager-content')
-    const formCategory = document.getElementById('category-editor')
-    const openCategory = document.getElementById('open-category')
-    const btnOpen = document.getElementById('open')
-
-    !this.#categories.length ? this.#btnMenu.classList.add('hide') : this.#btnMenu.classList.remove('hide')
-
-    this.#btnMenu.addEventListener('click', () => {
-      managerContent.style.display = 'block'
-      formCategory.style.display = 'none'
-      this.#btnCategory.style.display = 'none'
-      this.#empty.style.display = 'none'
-      btnOpen.style.opacity = '0'
-      openCategory.style.opacity = '0'
-
-      this.editCategoryUI()
-    })
-  }
-
   toggleManagerContent() {
     const btnOpen = document.getElementById('open')
     const btnClose = document.getElementById('close')
@@ -405,7 +375,6 @@ export default class View {
     const formTask = document.getElementById('task-editor')
     const formCategory = document.getElementById('category-editor')
     const select = document.getElementById('get-categories')
-    const editCategories = document.getElementById('edit-category')
 
     btnOpen.addEventListener('click', () => {
       managerContent.style.display = 'block'
@@ -417,7 +386,6 @@ export default class View {
       this.#btnAdd.style.display = 'block'
       this.#categories.length ? select.style.display = 'block' : select.style.display = 'none'
       this.#empty.style.display = 'none'
-      editCategories.style.display = 'none'
     })
 
     openCategory.addEventListener('click', () => {
@@ -429,7 +397,6 @@ export default class View {
       this.#btnAdd.style.display = 'none'
       this.#btnCategory.style.display = 'block'
       this.#empty.style.display = 'none'
-      editCategories.style.display = 'block'
     })
 
     btnClose.addEventListener('click', () => {
@@ -447,6 +414,5 @@ export default class View {
     this.toggleManagerContent()
     this.figure()
     this.searchTask()
-    this.menu()
   }
 }
