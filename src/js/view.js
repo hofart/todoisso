@@ -66,7 +66,6 @@ export default class View {
       if (this.#categories) {
         this.selectUI(this.#categories)
         this.categoryUI(this.#categories)
-        this.filterByCategories()
         this.deleteCategory()
       }
     })
@@ -136,7 +135,9 @@ export default class View {
   }
 
   filterUI() {
-    !this.#todolist.length ? this.#filter.style.display = 'none' : null
+    !this.#todolist.length 
+      ? this.#filter.style.display = 'none' 
+      : null
 
     this.#filter.innerHTML = this.#filterTypes.map(item => `
       <a
@@ -190,48 +191,59 @@ export default class View {
 
   setDate() {
     const date = new Date()
-    const setDate = document.getElementById('title')
+    const setDate = document.getElementById("title")
 
     setDate.innerHTML = `
-      Today ${date.getDate()} <span id="date">${this.#days[date.getDay()]} - ${this.#months[date.getMonth()]}</span>
+      Today ${date.getDate()} <span id="date">${this.#days[date.getDay()]} - ${
+      this.#months[date.getMonth()]
+    }</span>
     `
   }
 
   updateCount(todos) {
-    return document.getElementById('count').innerHTML = `${todos.length} tasks`
+    document.getElementById("count").innerHTML = `${todos.length} tasks`;
   }
-
+  
   activeFilter() {
-    const nodes = document.querySelectorAll('.view__filter__filtered')
+    const nodes = document.querySelectorAll(".view__filter__filtered");
 
-    nodes.forEach(el => el.addEventListener('click', () => {
-      const dataParam = el.getAttribute('data-param')
-      const type = this.#filterTypes.find(item => item.param === dataParam)
+    nodes.forEach(el => el.addEventListener("click", () => {
+        const filteredType = this.#filterTypes.find(
+          item => item.param === el.getAttribute("data-param")
+        )
 
-      for (let key of this.#filterTypes) {
-        key.active = false
-        type.param == key.param ? key.active = true : null
-      }
+        for (let key of this.#filterTypes) {
+          filteredType.param.includes(key.param) 
+            ? (key.active = true) 
+            : (key.active = false)
+        }
 
-      this.filterUI()
-    }))
+        this.filterUI()
+      })
+    )
   }
 
   filterByCategories() {
     const nodes = document.querySelectorAll('.view__categorie__category')
 
     nodes.forEach(el => el.addEventListener('click', () => {
-      const dataCategory = el.getAttribute('data-category')
-      const category = this.#categories.find(item => item.title === dataCategory)
-      const filterStatus = this.#filterTypes.find(item => item.active === true)
       const inputSearch = document.getElementById('search').value
 
-      for (let key of this.#categories) {
-        key.active = false
-        key.title === category.title ? key.active = true : null
-      }
+      const filteredStatus = this.#filterTypes.find(
+        item => item.active === true
+      )
 
-      this.filters(inputSearch, filterStatus.param, category.title)
+      const filteredCategory = this.#categories.find(
+        item => item.title === el.getAttribute('data-category')
+      )
+
+      for (let key of this.#categories) {
+        filteredCategory.title.includes(key.title)
+          ? key.active = true
+          : key.active = false
+      }
+      
+      this.filters(inputSearch, filteredStatus.param, filteredCategory.title)
       this.categoryUI(this.#categories)
     }))
   }
