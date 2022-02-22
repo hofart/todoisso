@@ -2,11 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TodoIsso -- Remember all your tasks every day without hassle.</title>
   <link rel="stylesheet" href="/src/styles/styles.css">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" crossorigin="anonymous">
 </head>
 <body>
   <main role="main">
@@ -52,7 +51,11 @@
 
     <div class="manager-content" id="manager-content">
       <form class="manager-content__form" id="task-editor">
-        <select class="manager-content__form__custom-select" id="get-categories" name="category"></select>
+        <select 
+          class="manager-content__form__custom-select" 
+          id="get-categories" name="category" 
+          title="Get Categories"
+        ></select>
         <input type="text" class="manager-content__form__field" name="title" placeholder="ex: Meeting tomorrow 08:00 AM">
         <textarea class="manager-content__form__field" name="content" placeholder="Description"></textarea>
       </form>
@@ -61,10 +64,12 @@
         <input type="text" class="manager-content__form__field" name="title" placeholder="New category">
       </form>
 
+      <ul id="categories"></ul>
+
       <div class="btn-group">
-        <button class="btn btn--primary" id="add-task">Create Task</button>
-        <button class="btn btn--primary" id="add-category">Create Category</button>
-        <button class="btn btn--cancel" id="close">Cancel</button>
+        <button type="submit" class="btn btn--primary" id="add-task">Create Task</button>
+        <button type="submit" class="btn btn--primary" id="add-category">Create Category</button>
+        <button type="submit" class="btn btn--cancel" id="close">Cancel</button>
       </div>
     </div>
 
