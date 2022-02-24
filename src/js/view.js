@@ -78,18 +78,18 @@ export default class View {
   }
 
   todoUI(todo) {
-    this.#ul.innerHTML = todo.map(item => `
-      <li class="view__list__task" id="task-${item.id}" ${item.category ? `data-category="${item.category}"` : ''}>
+    this.#ul.innerHTML = todo.map(task => `
+      <li class="view__list__task" id="task-${task.id}" data-id="${task.id}" ${task.category ? `data-category="${task.category}"` : ''}>
         <div class="view__list__task__checkbox">
-          <input type="checkbox" class="view__list__task__checkbox__input" data-id="${item.id}" ${item.done ? 'checked' : ''}>
+          <input type="checkbox" class="view__list__task__checkbox__input" data-id="${task.id}" ${task.done ? 'checked' : ''}>
           <div class="view__list__task__checkbox__body">
-            <p class="view__list__task__checkbox__body__title title-list ${item.done ? 'is--done' : ''}">${item.title}</p>
-            <p class="view__list__task__checkbox__body__description">${item.content}</p>
-            ${item.category ? `<small>Category: ${item.category}</small>` : ''}
+            <p class="view__list__task__checkbox__body__title title-list ${task.done ? 'is--done' : ''}">${task.title}</p>
+            <p class="view__list__task__checkbox__body__description">${task.content}</p>
+            ${task.category ? `<small>Category: ${task.category}</small>` : ''}
           </div>
         </div>
         <div class="view__list__task__delete">
-          <a href="#!" class="view__list__task__delete--delete" data-id="${item.id}">
+          <a href="#!" class="view__list__task__delete--delete" data-id="${task.id}">
             <i class="far fa-trash-alt"></i>
           </a>
         </div>
@@ -276,110 +276,97 @@ export default class View {
   filters(value, param, category) {
     const nodes = document.querySelectorAll('.view__list__task')
 
-    if (param === 'all') {
-      for (const key of this.#todolist) {
-        if (category) {
-          if (key.title.includes(value) && key.category === category) {
+    for (const key of this.#todolist) {
+      if (param === "all") {
+        // sem pesquisar e sem categoria
+        if (!value && !category) {
 
-            nodes.forEach(element => {
-              const currentCategory = element.getAttribute('data-category')
+          nodes.forEach(element => {
+            if (key.id == element.getAttribute('data-id')) {
+              console.log(element)
+            }
+          })
+        }
 
-              if (currentCategory !== category) {
-                element.classList.add('hide')
-              }
-            })
+        // sem valor e com categoria
+        if (!value && category && key.category === category) {
+          console.log(key)
+          
+          nodes.forEach(element => {
+            if (key.id == element.getAttribute('data-id')) {
+              console.log(element)
+            }
+          })
+        }
 
-            console.log('parametro all')
-            console.log('tem categoria')
-            console.log(key.title)
-          }
-        } else {
-          if (key.title.includes(value)) {
-            nodes.forEach(element => element.classList.remove('hide'))
-            
-            console.log('parametro all')
-            console.log('não tem categoria')
-            console.log(key.title)
-          }
+        // com valor e sem categoria
+        if (value && key.title.includes(value) && !category) {
+          console.log(key)
+
+          nodes.forEach(element => {
+            if (key.id == element.getAttribute('data-id')) {
+              console.log(element)
+            }
+          })
+        }
+
+        // com valor e com categoria
+        if (value && key.title.includes(value) && category && key.category === category) {
+          console.log(key)
+
+          nodes.forEach(element => {
+            if (key.id == element.getAttribute('data-id')) {
+              console.log(element)
+            }
+          })
+        }
+      }
+
+      if (param === "active") {
+        // sem pesquisar, sem categoria e ativo
+        if (!value && !category && !key.done) {
+          console.log(key)
+        }
+
+        // sem valor, com categoria e ativo
+        if (!value && category && key.category === category && !key.done) {
+          console.log(key)
+        }
+
+        // com valor, sem categoria e ativo
+        if (value && key.title.includes(value) && !category && !key.done) {
+          console.log(key)
+        }
+
+        // com valor, com categoria e ativo
+        if (value && key.title.includes(value) && category && key.category === category && !key.done) {
+          console.log(key)
+        }
+      }
+
+      if (param === "completed") {
+        // sem valor, sem categoria e feito
+        if (!value && !category && key.done) {
+          console.log(key)
+        }
+
+        // sem valor, com categoria e feito
+        if (!value && category && key.category === category && key.done) {
+          console.log(key)
+        }
+
+        // com valor, sem categoria e feito
+        if (value && key.title.includes(value) && !category && key.done) {
+          console.log(key)
+        }
+
+        // com valor, com categoria e ativo
+        if (value && key.title.includes(value) && category && key.category === category && key.done) {
+          console.log(key)
         }
       }
     }
-
-    /* if (param === 'active') {
-      for (const key of this.#todolist) {
-        if (category) {
-          if (key.title.includes(value) && key.category === category && !key.done) {
-            console.log('parametro active')
-            console.log('tem categoria')
-            console.log(key.title)
-          }
-        } else {
-          if (key.title.includes(value) && !key.category && !key.done) {
-            console.log('parametro active')
-            console.log('não tem categoria')
-            console.log(key.title)
-          }
-        }
-      }
-    } */
-
-    /* if (param === 'completed') {
-      for (const key of this.#todolist) {
-        if (category) {
-          if (key.title.includes(value) && key.category === category && key.done) {
-            console.log('parametro completed')
-            console.log('tem categoria')
-            console.log(key.title)
-          }
-        } else {
-          if (key.title.includes(value) && !key.category && key.done) {
-            console.log('parametro completed')
-            console.log('não tem categoria')
-            console.log(key.title)
-          }
-        }
-      }
-    } */
   }
-
-  /* filters(li, value, param, category) {
-    li.forEach(el => {
-      const textNode = el.firstElementChild.lastElementChild.firstElementChild.textContent
-      const titleNode = el.firstElementChild.lastElementChild.firstElementChild
-      const isDone = titleNode.classList.contains('is--done')
-
-      this.#todolist.forEach(todo => {
-        if (!todo.title.includes(value) && textNode === todo.title) {
-          console.log(todo)
-        }
-
-        /* if (param === 'active') {
-          todo.title.includes(value) && textNode === todo.title && isDone ? el.classList.add('hide') : el.classList.remove('hide')
-        }
-
-        if (param === 'completed') {
-          todo.title.includes(value) && textNode === todo.title && !isDone ? el.classList.add('hide') : el.classList.remove('hide')
-        }
-
-        if (todo.title.includes(value) && textNode === todo.title) {
-          if (category) {
-            category.title === el.getAttribute('data-category') ? el.style.display = 'flex' : el.style.display = 'none'
-          } else {
-            el.style.display = 'flex'
-          }
-          el.classList.remove('hide')
-        } 
-
-        if (todo.title.includes(value) && textNode === todo.title && isDone && param === 'active') {
-          el.style.display = 'none'
-        }
-
-        if (todo.title.includes(value) && textNode === todo.title && !isDone && param === 'completed') {
-          el.style.display = 'none'
-        }
-      })
-    })
-  } */
 
   figure() {
     this.#todolist.length < 1 ? this.#empty.style.display = 'block' : this.#empty.style.display = 'none'
