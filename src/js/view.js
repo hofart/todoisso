@@ -3,8 +3,7 @@ export default class View {
 
   #todolist = []
   #categories = []
-
-  #ul = document.getElementById('todo')
+  
   #btnAddTask = document.getElementById('add-task')
   #btnAddCategory = document.getElementById('add-category')
   #empty = document.getElementById('empty-figure')
@@ -78,8 +77,13 @@ export default class View {
   }
 
   todoUI(todo) {
-    this.#ul.innerHTML = todo.map(task => `
-      <li class="view__list__task" id="task-${task.id}" data-id="${task.id}" ${task.category ? `data-category="${task.category}"` : ''}>
+    document.getElementById('todo').innerHTML = todo.map(task => `
+      <li
+        class="view__list__task" 
+        id="task-${task.id}" 
+        data-id="${task.id}" 
+        ${task.category ? `data-category="${task.category}"` : ''}
+      >
         <div class="view__list__task__checkbox">
           <input type="checkbox" class="view__list__task__checkbox__input" data-id="${task.id}" ${task.done ? 'checked' : ''}>
           <div class="view__list__task__checkbox__body">
@@ -111,7 +115,28 @@ export default class View {
     `).join('')}
     `
 
-    this.filterByCategories()
+    this.activeFilterCategory()
+  }
+
+  activeFilterCategory() {
+    const nodes = document.querySelectorAll('.view__categorie__category')
+
+    nodes.forEach(element => 
+      element.addEventListener("click", () => {
+        const currentCategory = this.#categories.find(category => category.title === element.getAttribute('data-category'))
+
+        for (const key of this.#categories) {
+          if (event.detail === 2) {
+            key.active = false
+          } else {
+            currentCategory.title === key.title ? key.active = true : key.active = false
+          }
+        }
+
+        this.categoryUI(this.#categories)
+        this.filter()
+      })
+    )
   }
 
   listCategoriesUI(category) {
@@ -140,7 +165,8 @@ export default class View {
     !this.#todolist.length ? this.#filter.style.display = 'none' : null
 
     this.#filter.innerHTML = this.#filterTypes.map(item => `
-      <a href="#!" 
+      <a 
+        href="#!" 
         class="view__filter__filtered ${item.active ? 'is--active' : ''}" 
         data-param="${item.param}" 
         data-status="${item.active}"
@@ -149,11 +175,28 @@ export default class View {
       </a>
     `).join('')
 
-    this.filterByStatus()
+    this.activeFilterType()
+  }
+
+  activeFilterType() {
+    const nodes = document.querySelectorAll(".view__filter__filtered")
+
+    nodes.forEach(element => 
+      element.addEventListener("click", () => {
+        const currentFilterType = this.#filterTypes.find(filter => filter.param === element.getAttribute("data-param"))
+
+        for (let key of this.#filterTypes) {
+          currentFilterType.param.includes(key.param) ? key.active = true : key.active = false
+        }
+
+        this.filterUI()
+        this.filter()
+      })
+    )
   }
 
   doneOrUndone() {
-    const nodes = this.#ul.querySelectorAll('.view__list__task__checkbox__input')
+    const nodes = document.querySelectorAll('.view__list__task__checkbox__input')
 
     nodes.forEach(element => 
       element.addEventListener('click', () => {
@@ -172,7 +215,7 @@ export default class View {
   }
 
   deleteTask() {
-    const nodes = this.#ul.querySelectorAll('.view__list__task__delete--delete')
+    const nodes = document.querySelectorAll('.view__list__task__delete--delete')
 
     nodes.forEach(element => 
       element.addEventListener('click', () => {
@@ -209,8 +252,8 @@ export default class View {
   updateCount(todos) {
     document.getElementById("count").innerHTML = `${todos.length} tasks`
   }
-  
-  filterByStatus() {
+
+  /* filterByStatus() {
     const nodes = document.querySelectorAll(".view__filter__filtered")
 
     nodes.forEach(element => 
@@ -228,9 +271,9 @@ export default class View {
         this.filters(inputSearch, currentFilterType.param, hasCategory)
       })
     )
-  }
+  } */
 
-  filterByCategories() {
+  /* filterByCategories() {
     const nodes = document.querySelectorAll('.view__categorie__category')
 
     nodes.forEach(element => 
@@ -251,19 +294,7 @@ export default class View {
         this.filters(inputSearch, currentFilterType.param, currentCategory.title)
       })
     )
-  }
-
-  searchTask() {
-    const input = document.getElementById('search')
-
-    input.addEventListener('input', e => {
-      const value = e.target.value
-      const filterStatus = this.#filterTypes.find(item => item.active === true)
-      const currentCategory = this.#categories.find(item => item.active === true)
-      const hasCategory = currentCategory ? currentCategory.title : false
-      this.filters(value, filterStatus.param, hasCategory)
-    })
-  }
+  } */
 
   /**
    * @description considering search bar when filter tasks
@@ -273,99 +304,106 @@ export default class View {
    * @param {String} category from category
    */
 
-  filters(value, param, category) {
+  filter() {
     const nodes = document.querySelectorAll('.view__list__task')
+    const input = document.getElementById('search')
+    const currentFilterTypes = this.#filterTypes.find(filterType => filterType.active === true)
+    const currentCategory = this.#categories.find(category => category.active === true)
 
-    for (const key of this.#todolist) {
-      if (param === "all") {
-        // sem pesquisar e sem categoria
-        if (!value && !category) {
+    nodes.forEach(element => 
+      
+    )
 
-          nodes.forEach(element => {
-            if (key.id == element.getAttribute('data-id')) {
-              console.log(element)
-            }
-          })
-        }
-
-        // sem valor e com categoria
-        if (!value && category && key.category === category) {
-          console.log(key)
-          
-          nodes.forEach(element => {
-            if (key.id == element.getAttribute('data-id')) {
-              console.log(element)
-            }
-          })
-        }
-
-        // com valor e sem categoria
-        if (value && key.title.includes(value) && !category) {
-          console.log(key)
-
-          nodes.forEach(element => {
-            if (key.id == element.getAttribute('data-id')) {
-              console.log(element)
-            }
-          })
-        }
-
-        // com valor e com categoria
-        if (value && key.title.includes(value) && category && key.category === category) {
-          console.log(key)
-
-          nodes.forEach(element => {
-            if (key.id == element.getAttribute('data-id')) {
-              console.log(element)
-            }
-          })
+    /* input.addEventListener('input', event => {
+      const value = event.target.value
+      
+      for (const key of this.#todolist) {
+        if (key.title.includes(value)) {
         }
       }
+    }) */
 
-      if (param === "active") {
-        // sem pesquisar, sem categoria e ativo
-        if (!value && !category && !key.done) {
-          console.log(key)
-        }
 
-        // sem valor, com categoria e ativo
-        if (!value && category && key.category === category && !key.done) {
-          console.log(key)
-        }
 
-        // com valor, sem categoria e ativo
-        if (value && key.title.includes(value) && !category && !key.done) {
-          console.log(key)
-        }
+    // sem pesquisar e sem categoria
+      /* if (param === "all" && !value && !category) {
+        nodes.forEach(element => {
+          if (key.id == element.getAttribute('data-id')) {
+            key.filtered = true
+            console.log(element)
+          }
+        })
+      } */
 
-        // com valor, com categoria e ativo
-        if (value && key.title.includes(value) && category && key.category === category && !key.done) {
-          console.log(key)
-        }
+      // sem valor e com categoria
+      /* if (param === "all" && !value && category && key.category === category) {
+        nodes.forEach(element => {
+          if (key.id == element.getAttribute('data-id')) {
+            key.filtered = true
+            console.log(element)
+          }
+        })
+      } */
+
+      /* // com valor e sem categoria
+      if (param === "all" && value && key.title.includes(value) && !category) {
+        nodes.forEach(element => {
+          if (key.id == element.getAttribute('data-id')) {
+            key.filtered = true
+            console.log(element)
+          }
+        })
       }
 
-      if (param === "completed") {
-        // sem valor, sem categoria e feito
-        if (!value && !category && key.done) {
-          console.log(key)
-        }
-
-        // sem valor, com categoria e feito
-        if (!value && category && key.category === category && key.done) {
-          console.log(key)
-        }
-
-        // com valor, sem categoria e feito
-        if (value && key.title.includes(value) && !category && key.done) {
-          console.log(key)
-        }
-
-        // com valor, com categoria e ativo
-        if (value && key.title.includes(value) && category && key.category === category && key.done) {
-          console.log(key)
-        }
+      // com valor e com categoria
+      if (param === "all" && value && key.title.includes(value) && category && key.category === category) {
+        nodes.forEach(element => {
+          if (key.id == element.getAttribute('data-id')) {
+            key.filtered = true
+            console.log(element)
+          }
+        })
       }
-    }
+
+      // sem pesquisar, sem categoria e ativo
+      if (param === "active" && !value && !category && !key.done) {
+        33333333333333333333
+      }
+
+      // sem valor, com categoria e ativo
+      if (param === "active" && !value && category && key.category === category && !key.done) {
+        console.log(key)
+      }
+
+      // com valor, sem categoria e ativo
+      if (param === "active" && value && key.title.includes(value) && !category && !key.done) {
+        console.log(key)
+      }
+
+      // com valor, com categoria e ativo
+      if (param === "active" && value && key.title.includes(value) && category && key.category === category && !key.done) {
+        console.log(key)
+      }
+
+      // sem valor, sem categoria e feito
+      if (param === "completed" && !value && !category && key.done) {
+        console.log(key)
+      }
+
+      // sem valor, com categoria e feito
+      if (param === "completed" && !value && category && key.category === category && key.done) {
+        console.log(key)
+      }
+
+      // com valor, sem categoria e feito
+      if (param === "completed" && value && key.title.includes(value) && !category && key.done) {
+        console.log(key)
+      }
+
+      // com valor, com categoria e ativo
+      if (param === "completed" && value && key.title.includes(value) && category && key.category === category && key.done) {
+        console.log(key)
+      } */
   }
 
   figure() {
@@ -421,6 +459,6 @@ export default class View {
     this.setDate()
     this.toggleManagerContent()
     this.figure()
-    this.searchTask()
+    this.filter()
   }
 }

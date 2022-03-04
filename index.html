@@ -1,19 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TodoIsso -- Remember all your tasks every day without hassle.</title>
   <link rel="stylesheet" href="/src/styles/styles.css">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
 </head>
+
 <body>
-  <main role="main">
+  <main>
     <div class="view">
       <div class="view__header">
         <h1 id="title"></h1>
         <div class="view__search-bar">
-          <input type="search" id="search" class="view__search-bar__field" placeholder="Search for a task">
+          <input 
+            type="search" 
+            id="search" 
+            class="view__search-bar__field"
+            placeholder="Search for a task"
+          />
         </div>
       </div>
 
@@ -25,7 +32,9 @@
           <div class="view__wrapper__manage__filter" id="wrapper-filter"></div>
         </div>
       </div>
+
       <div class="view__categories" id="category"></div>
+
       <ul class="view__list" id="todo"></ul>
     </div>
 
@@ -52,27 +61,52 @@
     <div class="manager-content" id="manager-content">
       <form class="manager-content__form" id="task-editor">
         <select class="manager-content__form__field" name="category" id="get-categories" title="Categories"></select>
-        <input type="text" class="manager-content__form__field" name="title" placeholder="ex: Meeting tomorrow 08:00 AM">
+        <input 
+          type="text" 
+          class="manager-content__form__field" 
+          name="title"
+          placeholder="ex: Meeting tomorrow 08:00 AM"
+        >
         <textarea class="manager-content__form__field" name="content" placeholder="Description"></textarea>
       </form>
 
       <form class="manager-content__form" id="category-editor">
-        <input type="text" class="manager-content__form__field" name="title" placeholder="New category">
+        <input 
+          type="text" 
+          class="manager-content__form__field" 
+          name="title" 
+          placeholder="New category"
+        >
       </form>
 
       <ul id="categories"></ul>
 
       <div class="btn-group">
-        <button type="submit" class="btn btn--primary" id="add-task">Create Task</button>
-        <button type="submit" class="btn btn--primary" id="add-category">Create Category</button>
-        <button type="submit" class="btn btn--cancel" id="close">Cancel</button>
+        <button type="submit" class="btn btn--primary" id="add-task">
+          Create Task
+        </button>
+
+        <button type="submit" class="btn btn--primary" id="add-category">
+          Create Category
+        </button>
+
+        <button type="submit" class="btn btn--cancel" id="close">
+          Cancel
+        </button>
       </div>
     </div>
 
     <figure class="empty" id="empty-state">
-      <img src="./src/assets/empty.svg" class="empty__img" id="empty-figure" alt="empty">
+      <img 
+        src="./src/assets/empty.svg" 
+        class="empty__img"
+        id="empty-figure" 
+        alt="empty"
+      >
     </figure>
   </main>
+  
   <script defer type="module" src="index.js"></script>
 </body>
+
 </html>
