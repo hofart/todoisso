@@ -306,104 +306,27 @@ export default class View {
 
   filter() {
     const nodes = document.querySelectorAll('.view__list__task')
-    const input = document.getElementById('search')
-    const currentFilterTypes = this.#filterTypes.find(filterType => filterType.active === true)
     const currentCategory = this.#categories.find(category => category.active === true)
 
-    nodes.forEach(element => 
-      
-    )
+    if (currentCategory) {
+      nodes.forEach(element => {
+        const dataCategory = element.getAttribute('data-category')
+        const currentFilterType = this.#filterTypes.find(filterType => filterType.active === true)
+        const input = element.firstElementChild.firstElementChild
 
-    /* input.addEventListener('input', event => {
-      const value = event.target.value
-      
-      for (const key of this.#todolist) {
-        if (key.title.includes(value)) {
+        if (dataCategory !== currentCategory.title) {
+          element.classList.add('hide')
+        } else {
+          element.classList.remove('hide')
         }
-      }
-    }) */
-
-
-
-    // sem pesquisar e sem categoria
-      /* if (param === "all" && !value && !category) {
-        nodes.forEach(element => {
-          if (key.id == element.getAttribute('data-id')) {
-            key.filtered = true
-            console.log(element)
-          }
-        })
-      } */
-
-      // sem valor e com categoria
-      /* if (param === "all" && !value && category && key.category === category) {
-        nodes.forEach(element => {
-          if (key.id == element.getAttribute('data-id')) {
-            key.filtered = true
-            console.log(element)
-          }
-        })
-      } */
-
-      /* // com valor e sem categoria
-      if (param === "all" && value && key.title.includes(value) && !category) {
-        nodes.forEach(element => {
-          if (key.id == element.getAttribute('data-id')) {
-            key.filtered = true
-            console.log(element)
-          }
-        })
-      }
-
-      // com valor e com categoria
-      if (param === "all" && value && key.title.includes(value) && category && key.category === category) {
-        nodes.forEach(element => {
-          if (key.id == element.getAttribute('data-id')) {
-            key.filtered = true
-            console.log(element)
-          }
-        })
-      }
-
-      // sem pesquisar, sem categoria e ativo
-      if (param === "active" && !value && !category && !key.done) {
-        33333333333333333333
-      }
-
-      // sem valor, com categoria e ativo
-      if (param === "active" && !value && category && key.category === category && !key.done) {
-        console.log(key)
-      }
-
-      // com valor, sem categoria e ativo
-      if (param === "active" && value && key.title.includes(value) && !category && !key.done) {
-        console.log(key)
-      }
-
-      // com valor, com categoria e ativo
-      if (param === "active" && value && key.title.includes(value) && category && key.category === category && !key.done) {
-        console.log(key)
-      }
-
-      // sem valor, sem categoria e feito
-      if (param === "completed" && !value && !category && key.done) {
-        console.log(key)
-      }
-
-      // sem valor, com categoria e feito
-      if (param === "completed" && !value && category && key.category === category && key.done) {
-        console.log(key)
-      }
-
-      // com valor, sem categoria e feito
-      if (param === "completed" && value && key.title.includes(value) && !category && key.done) {
-        console.log(key)
-      }
-
-      // com valor, com categoria e ativo
-      if (param === "completed" && value && key.title.includes(value) && category && key.category === category && key.done) {
-        console.log(key)
-      } */
+      })
+    } else {
+      nodes.forEach(element => {
+        if (element.classList.contains('hide')) {
+          element.classList.remove('hide')
+        }
+      })
+    }
   }
 
   figure() {
