@@ -9,13 +9,47 @@ export default class View {
   #empty = document.getElementById('empty-figure')
   #filter = document.getElementById('wrapper-filter')
 
-  #months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-  #days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+  #months = [
+    'Jan', 
+    'Feb', 
+    'Mar', 
+    'Apr', 
+    'May', 
+    'Jun', 
+    'Jul', 
+    'Aug', 
+    'Sep', 
+    'Oct', 
+    'Nov', 
+    'Dec'
+  ]
+
+  #days = [
+    'Sun',
+    'Mon',
+    'Tue',
+    'Wed',
+    'Thu',
+    'Fri',
+    'Sat'
+  ]
 
   #filterTypes = [
-    { name: 'All', param: 'all', active: true },
-    { name: 'Active', param: 'active', active: false },
-    { name: 'Completed', param: 'completed', active: false }
+    { 
+      name: 'All', 
+      param: 'all',
+      active: true
+    },
+    { 
+      name: 'Active', 
+      param: 'active',
+      active: false 
+    },
+    { 
+      name: 'Completed', 
+      param: 'completed', 
+      active: false
+    }
   ]
 
   addNewTask() {
@@ -104,15 +138,15 @@ export default class View {
   categoryUI(category) {
     document.getElementById('category').innerHTML = `
       ${category.map(item => `
-      <a href="#!" 
-        class="view__categorie__category ${item.active ? 'is--active' : ''}" 
-        data-id="${item.id}" 
-        data-category="${item.title}" 
-        data-active="${item.active}"
-      >
-        ${item.title}
-      </a>
-    `).join('')}
+        <a href="#!" 
+          class="view__categorie__category ${item.active ? 'is--active' : ''}" 
+          data-id="${item.id}" 
+          data-category="${item.title}" 
+          data-active="${item.active}"
+        >
+          ${item.title}
+        </a>
+      `).join('')}
     `
 
     this.activeFilterCategory()
@@ -126,11 +160,7 @@ export default class View {
         const currentCategory = this.#categories.find(category => category.title === element.getAttribute('data-category'))
 
         for (const key of this.#categories) {
-          if (event.detail === 2) {
-            key.active = false
-          } else {
-            currentCategory.title === key.title ? key.active = true : key.active = false
-          }
+          event.detail === 2 ? key.active = false : currentCategory.title === key.title ? key.active = true : key.active = false
         }
 
         this.categoryUI(this.#categories)
@@ -162,7 +192,7 @@ export default class View {
   }
 
   filterUI() {
-    !this.#todolist.length ? this.#filter.style.display = 'none' : null
+    !this.#todolist.length ? this.#filter.classList.add('hide') : this.#filter.classList.remove('hide')
 
     this.#filter.innerHTML = this.#filterTypes.map(item => `
       <a 
@@ -206,9 +236,11 @@ export default class View {
         if (element.checked) {
           task.done = true
           text.classList.add('is--done')
+          this.filter()
         } else {
           task.done = false
           text.classList.remove('is--done')
+          this.filter()
         }
       })
     )
@@ -253,84 +285,64 @@ export default class View {
     document.getElementById("count").innerHTML = `${todos.length} tasks`
   }
 
-  /* filterByStatus() {
-    const nodes = document.querySelectorAll(".view__filter__filtered")
-
-    nodes.forEach(element => 
-      element.addEventListener("click", () => {
-        const currentFilterType = this.#filterTypes.find(filter => filter.param === element.getAttribute("data-param"))
-        const inputSearch = document.getElementById('search').value
-        const currentCategory = this.#categories.find(category => category.active === true)
-        const hasCategory = currentCategory ? currentCategory.title : undefined
-
-        for (let key of this.#filterTypes) {
-          currentFilterType.param.includes(key.param) ? key.active = true : key.active = false
-        }
-
-        this.filterUI()
-        this.filters(inputSearch, currentFilterType.param, hasCategory)
-      })
-    )
-  } */
-
-  /* filterByCategories() {
-    const nodes = document.querySelectorAll('.view__categorie__category')
-
-    nodes.forEach(element => 
-      element.addEventListener('click', (event) => {
-        const inputSearch = document.getElementById('search').value
-        const currentFilterType = this.#filterTypes.find(filter => filter.active === true)
-        const currentCategory = this.#categories.find(category => category.title === element.getAttribute('data-category'))
-
-        for (const key of this.#categories) {
-          if (event.detail === 2) {
-            key.active = false
-          } else {
-            currentCategory.title === key.title ? key.active = true : key.active = false
-          }
-        }
-
-        this.categoryUI(this.#categories)
-        this.filters(inputSearch, currentFilterType.param, currentCategory.title)
-      })
-    )
-  } */
-
-  /**
-   * @description considering search bar when filter tasks
-   * @param {HTMLLIElement} li
-   * @param {String} value from seacrch bar
-   * @param {String} param from filterStatus
-   * @param {String} category from category
-   */
-
   filter() {
     const nodes = document.querySelectorAll('.view__list__task')
     const currentCategory = this.#categories.find(category => category.active === true)
+    const currentFilterType = this.#filterTypes.find(filterType => filterType.active === true)
+    const input = document.querySelectorAll('.view__list__task__checkbox__input')
 
-    if (currentCategory) {
-      nodes.forEach(element => {
-        const dataCategory = element.getAttribute('data-category')
-        const currentFilterType = this.#filterTypes.find(filterType => filterType.active === true)
-        const input = element.firstElementChild.firstElementChild
+    this.checkFilters(nodes, currentCategory, currentFilterType.param, input)
+  }
 
-        if (dataCategory !== currentCategory.title) {
-          element.classList.add('hide')
-        } else {
-          element.classList.remove('hide')
-        }
-      })
+  checkFilters(nodes, category, filterType, input, inputSearch) {
+    if (category) {
+      if (filterType === 'all') {
+        nodes.forEach(element => {
+          const dataCategory = element.getAttribute('data-category')
+          dataCategory !== category.title ? element.classList.add('hide') : element.classList.remove('hide')
+        })
+      }
+
+      if (filterType === 'active') {
+        input.forEach(input => {
+          const li = input.parentNode.parentNode
+          const dataCategory = input.parentNode.parentNode.getAttribute('data-category')
+          dataCategory !== category.title || input.checked ? li.classList.add('hide') : li.classList.remove('hide')
+        })
+      }
+
+      if (filterType === 'completed') {
+        input.forEach(input => {
+          const li = input.parentNode.parentNode
+          const dataCategory = input.parentNode.parentNode.getAttribute('data-category')
+          dataCategory !== category.title || !input.checked ? li.classList.add('hide') : li.classList.remove('hide')
+        })
+      }
     } else {
-      nodes.forEach(element => {
-        if (element.classList.contains('hide')) {
-          element.classList.remove('hide')
-        }
-      })
+      if (filterType === 'all') {
+        nodes.forEach(element => {
+          element.classList.contains('hide') ? element.classList.remove('hide') : null
+        })
+      } 
+
+      if (filterType === 'active') {
+        input.forEach(input => {
+          const li = input.parentNode.parentNode
+          input.checked ? li.classList.add('hide') : li.classList.remove('hide')
+        })
+      }
+
+      if (filterType === 'completed') {
+        input.forEach(input => {
+          const li = input.parentNode.parentNode
+          !input.checked ? li.classList.add('hide') : li.classList.remove('hide')
+        })
+      }
     }
   }
 
   figure() {
-    this.#todolist.length < 1 ? this.#empty.style.display = 'block' : this.#empty.style.display = 'none'
+    !this.#todolist.length ? this.#empty.classList.remove('hide') : this.#empty.classList.add('hide')
   }
 
   toggleManagerContent() {

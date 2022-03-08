@@ -19,7 +19,7 @@
             type="search" 
             id="search" 
             class="view__search-bar__field"
-            placeholder="Search for a task"
+            placeholder="Type here..."
           />
         </div>
       </div>
@@ -60,14 +60,23 @@
 
     <div class="manager-content" id="manager-content">
       <form class="manager-content__form" id="task-editor">
-        <select class="manager-content__form__field" name="category" id="get-categories" title="Categories"></select>
+        <select 
+          class="manager-content__form__field" 
+          name="category" 
+          id="get-categories" 
+          title="Categories"
+        ></select>
         <input 
           type="text" 
           class="manager-content__form__field" 
           name="title"
           placeholder="ex: Meeting tomorrow 08:00 AM"
-        >
-        <textarea class="manager-content__form__field" name="content" placeholder="Description"></textarea>
+        />
+        <textarea 
+          class="manager-content__form__field" 
+          name="content" 
+          placeholder="Description"
+        ></textarea>
       </form>
 
       <form class="manager-content__form" id="category-editor">
@@ -76,7 +85,7 @@
           class="manager-content__form__field" 
           name="title" 
           placeholder="New category"
-        >
+        />
       </form>
 
       <ul id="categories"></ul>
@@ -102,10 +111,10 @@
         class="empty__img"
         id="empty-figure" 
         alt="empty"
-      >
+      />
     </figure>
   </main>
-  
+
   <script defer type="module" src="index.js"></script>
 </body>
 
