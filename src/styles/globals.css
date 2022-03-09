@@ -55,6 +55,10 @@ small {
   margin-top: 5px;
 }
 
+span {
+  color: var(--color-gray-1);
+}
+
 /* Setting class to use */
 .is--red {
   color: var(--color-red);

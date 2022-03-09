@@ -106,12 +106,13 @@ export default class View {
         this.categoryUI(this.#categories)
         this.listCategoriesUI(this.#categories)
         this.deleteCategory()
+        this.updateCountCategories(this.#categories)
       }
     })
   }
 
   todoUI(todo) {
-    document.getElementById('todo').innerHTML = todo.map(task => `
+    document.getElementById('todos').innerHTML = todo.map(task => `
       <li
         class="view__list__task" 
         id="task-${task.id}" 
@@ -119,10 +120,18 @@ export default class View {
         ${task.category ? `data-category="${task.category}"` : ''}
       >
         <div class="view__list__task__checkbox">
-          <input type="checkbox" class="view__list__task__checkbox__input" data-id="${task.id}" ${task.done ? 'checked' : ''}>
+          <input 
+            type="checkbox" 
+            class="view__list__task__checkbox__input" 
+            data-id="${task.id}" ${task.done ? 'checked' : ''}
+          />
           <div class="view__list__task__checkbox__body">
-            <p class="view__list__task__checkbox__body__title title-list ${task.done ? 'is--done' : ''}">${task.title}</p>
-            <p class="view__list__task__checkbox__body__description">${task.content}</p>
+            <p class="view__list__task__checkbox__body__title title-list ${task.done ? 'is--done' : ''}">
+              ${task.title}
+            </p>
+            <p class="view__list__task__checkbox__body__description">
+              ${task.content}
+            </p>
             ${task.category ? `<small>Category: ${task.category}</small>` : ''}
           </div>
         </div>
@@ -170,18 +179,23 @@ export default class View {
   }
 
   listCategoriesUI(category) {
-    document.getElementById('categories').innerHTML = category.map(item => `
-      <li>
-        <div style="display: flex; justify-content: space-between">
-          <a href="#!">
-            ${item.title}
-          </a>
-          <a href="#!" class="delete-category" data-id="${item.id}">
-            <i class="far fa-trash-alt"></i>
-          </a>
-        </div>
+    document.getElementById('categories').innerHTML = `
+      <li class="categories__count">
+        <span id="count-categories">0 categories</span>
       </li>
-    `).join('')
+      ${category.map(item => `
+        <li class="categories__list">
+          <div class="categories__list__body">
+            <a href="#!">
+              ${item.title}
+            </a>
+            <a href="#!" class="categories__list__body__delete-category is--red" data-id="${item.id}">
+              <i class="far fa-trash-alt"></i>
+            </a>
+          </div>
+        </li>
+      `).join('')}
+    `
   }
 
   optionCategoryUI(category) {
@@ -261,12 +275,24 @@ export default class View {
   }
 
   deleteCategory() {
-    const nodes = document.querySelectorAll('.delete-category')
+    const nodes = document.querySelectorAll('.categories__list__body__delete-category')
 
     nodes.forEach(element => 
       element.addEventListener('click', () => {
         this.#categories.splice(this.#categories.indexOf(category => category.id === element.getAttribute('data-id')), 1)
         this.categoryUI(this.#categories)
+        this.updateCountCategories(this.#categories)
+
+        for (const key of this.#todolist) {
+          if (key.category) {
+            const textNode = element.parentNode.firstElementChild.textContent
+            this.#todolist.splice(this.#todolist.indexOf(task => task.category === textNode), 1)
+            this.todoUI(this.#todolist)
+            this.filterUI()
+            this.updateCount(this.#todolist)
+          }
+        }
+
         element.parentNode.parentNode.remove()
       })
     )
@@ -283,6 +309,10 @@ export default class View {
 
   updateCount(todos) {
     document.getElementById("count").innerHTML = `${todos.length} tasks`
+  }
+
+  updateCountCategories(categories) {
+    document.getElementById("count-categories").innerHTML = `${categories.length} categories`
   }
 
   filter() {
