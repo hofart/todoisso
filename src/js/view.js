@@ -285,11 +285,8 @@ export default class View {
 
         for (const key of this.#todolist) {
           if (key.category) {
-            const textNode = element.parentNode.firstElementChild.textContent
-            this.#todolist.splice(this.#todolist.indexOf(task => task.category === textNode), 1)
+            key.category = false
             this.todoUI(this.#todolist)
-            this.filterUI()
-            this.updateCount(this.#todolist)
           }
         }
 
@@ -316,15 +313,23 @@ export default class View {
   }
 
   filter() {
-    const nodes = document.querySelectorAll('.view__list__task')
     const currentCategory = this.#categories.find(category => category.active === true)
     const currentFilterType = this.#filterTypes.find(filterType => filterType.active === true)
     const input = document.querySelectorAll('.view__list__task__checkbox__input')
+    const inputSearch = document.getElementById('search')
 
-    this.checkFilters(nodes, currentCategory, currentFilterType.param, input)
+    inputSearch.addEventListener('keyup', e => {
+      const value = e.target.value.toLowerCase()
+      this.checkFilters(currentCategory, currentFilterType.param, input, value)
+    })
+
+    this.checkFilters(currentCategory, currentFilterType.param, input)
   }
 
-  checkFilters(nodes, category, filterType, input, inputSearch) {
+  checkFilters(category, filterType, input, search = '') {
+    const nodes = document.querySelectorAll('.view__list__task')
+    const title = document.querySelectorAll('.view__list__task__checkbox__body__title')
+
     if (category) {
       if (filterType === 'all') {
         nodes.forEach(element => {
@@ -350,6 +355,14 @@ export default class View {
       }
     } else {
       if (filterType === 'all') {
+        if (search) {
+          title.forEach(element => {
+            if (element.textContent.toLowerCase().indexOf(search) === -1) {
+              console.log(element)
+            }
+          })
+        }
+
         nodes.forEach(element => {
           element.classList.contains('hide') ? element.classList.remove('hide') : null
         })
