@@ -75,7 +75,7 @@ span {
   background-color: var(--color-red)!important;
 }
 
-.hide {
+.is--hide {
   display: none!important;
 }
 

@@ -126,9 +126,9 @@ export default class View {
             data-id="${task.id}" ${task.done ? 'checked' : ''}
           />
           <div class="view__list__task__checkbox__body">
-            <p class="view__list__task__checkbox__body__title title-list ${task.done ? 'is--done' : ''}">
+            <h4 class="view__list__task__checkbox__body__title title-list ${task.done ? 'is--done' : ''}">
               ${task.title}
-            </p>
+            </h4>
             <p class="view__list__task__checkbox__body__description">
               ${task.content}
             </p>
@@ -206,7 +206,7 @@ export default class View {
   }
 
   filterUI() {
-    !this.#todolist.length ? this.#filter.classList.add('hide') : this.#filter.classList.remove('hide')
+    !this.#todolist.length ? this.#filter.classList.add('is--hide') : this.#filter.classList.remove('is--hide')
 
     this.#filter.innerHTML = this.#filterTypes.map(item => `
       <a 
@@ -317,7 +317,7 @@ export default class View {
     const currentFilterType = this.#filterTypes.find(filterType => filterType.active === true)
     const input = document.querySelectorAll('.view__list__task__checkbox__input')
     const inputSearch = document.getElementById('search')
-
+    
     inputSearch.addEventListener('keyup', e => {
       const value = e.target.value.toLowerCase()
       this.checkFilters(currentCategory, currentFilterType.param, input, value)
@@ -326,15 +326,15 @@ export default class View {
     this.checkFilters(currentCategory, currentFilterType.param, input)
   }
 
-  checkFilters(category, filterType, input, search = '') {
+  checkFilters(category, filterType, input, searchValue) {
     const nodes = document.querySelectorAll('.view__list__task')
-    const title = document.querySelectorAll('.view__list__task__checkbox__body__title')
+    const inputSearch = document.getElementById('search')
 
     if (category) {
       if (filterType === 'all') {
         nodes.forEach(element => {
           const dataCategory = element.getAttribute('data-category')
-          dataCategory !== category.title ? element.classList.add('hide') : element.classList.remove('hide')
+          dataCategory !== category.title ? element.classList.add('is--hide') : element.classList.remove('is--hide')
         })
       }
 
@@ -342,7 +342,7 @@ export default class View {
         input.forEach(input => {
           const li = input.parentNode.parentNode
           const dataCategory = input.parentNode.parentNode.getAttribute('data-category')
-          dataCategory !== category.title || input.checked ? li.classList.add('hide') : li.classList.remove('hide')
+          dataCategory !== category.title || input.checked ? li.classList.add('is--hide') : li.classList.remove('is--hide')
         })
       }
 
@@ -350,42 +350,45 @@ export default class View {
         input.forEach(input => {
           const li = input.parentNode.parentNode
           const dataCategory = input.parentNode.parentNode.getAttribute('data-category')
-          dataCategory !== category.title || !input.checked ? li.classList.add('hide') : li.classList.remove('hide')
+          dataCategory !== category.title || !input.checked ? li.classList.add('is--hide') : li.classList.remove('is--hide')
         })
       }
     } else {
-      if (filterType === 'all') {
-        if (search) {
-          title.forEach(element => {
-            if (element.textContent.toLowerCase().indexOf(search) === -1) {
-              console.log(element)
-            }
-          })
-        }
-
+      if (filterType === 'all')
         nodes.forEach(element => {
-          element.classList.contains('hide') ? element.classList.remove('hide') : null
+          const title = element.firstElementChild.lastElementChild.firstElementChild.textContent
+          
+          if (searchValue) {
+            return !title.includes(searchValue) ? element.classList.add('is--hide') : element.classList.remove('is--hide')
+          }
+
+          if (inputSearch.value) {
+            return !title.includes(inputSearch.value) ? element.classList.add('is--hide') : element.classList.remove('is--hide')
+          }
+
+          element.classList.remove('is--hide')
         })
-      } 
 
       if (filterType === 'active') {
         input.forEach(input => {
-          const li = input.parentNode.parentNode
-          input.checked ? li.classList.add('hide') : li.classList.remove('hide')
+          const title = input.parentElement
+          const li = input.parentElement.parentNode.lastElementChild.firstElementChild.textContent
+
+          input.checked ? li.classList.add('is--hide') : li.classList.remove('is--hide')
         })
       }
 
       if (filterType === 'completed') {
         input.forEach(input => {
           const li = input.parentNode.parentNode
-          !input.checked ? li.classList.add('hide') : li.classList.remove('hide')
+          !input.checked ? li.classList.add('is--hide') : li.classList.remove('is--hide')
         })
       }
     }
   }
 
   figure() {
-    !this.#todolist.length ? this.#empty.classList.remove('hide') : this.#empty.classList.add('hide')
+    !this.#todolist.length ? this.#empty.classList.remove('is--hide') : this.#empty.classList.add('is--hide')
   }
 
   toggleManagerContent() {
