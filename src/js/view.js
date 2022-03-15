@@ -334,27 +334,82 @@ export default class View {
       if (filterType === 'all') {
         nodes.forEach(element => {
           const dataCategory = element.getAttribute('data-category')
+          const title = element.firstElementChild.lastElementChild.firstElementChild.textContent
+
+          if (searchValue) {
+            if (!title.includes(searchValue) && dataCategory === category.title || dataCategory !== category.title) {
+              return element.classList.add('is--hide')
+            } else {
+              return element.classList.remove('is--hide')
+            }
+          }
+
+          if (inputSearch.value) {
+            if (!title.includes(inputSearch.value) && dataCategory === category.title || dataCategory !== category.title) {
+              return element.classList.add('is--hide')
+            } else {
+              return element.classList.remove('is--hide')
+            }
+          }
+
           dataCategory !== category.title ? element.classList.add('is--hide') : element.classList.remove('is--hide')
         })
       }
 
       if (filterType === 'active') {
         input.forEach(input => {
-          const li = input.parentNode.parentNode
-          const dataCategory = input.parentNode.parentNode.getAttribute('data-category')
+          const li = input.parentElement.parentNode
+          const dataCategory = input.parentElement.parentNode.getAttribute('data-category')
+          const title = input.parentNode.lastElementChild.firstElementChild.textContent
+
+          if (inputSearch.value && !input.checked) {
+            if (!title.includes(inputSearch.value) && dataCategory === category.title || dataCategory !== category.title) {
+              return li.classList.add('is--hide')
+            } else {
+              return li.classList.remove('is--hide')
+            }
+          }
+
+          if (searchValue && !input.checked) {
+            if (!title.includes(searchValue) && dataCategory === category.title || dataCategory !== category.title) {
+              return li.classList.add('is--hide')
+            } else {
+              return li.classList.remove('is--hide')
+            }
+          }
+
           dataCategory !== category.title || input.checked ? li.classList.add('is--hide') : li.classList.remove('is--hide')
         })
       }
 
       if (filterType === 'completed') {
         input.forEach(input => {
-          const li = input.parentNode.parentNode
-          const dataCategory = input.parentNode.parentNode.getAttribute('data-category')
+          const li = input.parentElement.parentNode
+          const dataCategory = input.parentElement.parentNode.getAttribute('data-category')
+          const title = input.parentNode.lastElementChild.firstElementChild.textContent
+
+          if (inputSearch.value && input.checked) {
+            if (!title.includes(inputSearch.value) && dataCategory === category.title || dataCategory !== category.title) {
+              return li.classList.add('is--hide')
+            } else {
+              return li.classList.remove('is--hide')
+            }
+          }
+
+          if (searchValue && input.checked) {
+            if (!title.includes(searchValue) && dataCategory === category.title || dataCategory !== category.title) {
+              return li.classList.add('is--hide')
+            } else {
+              return li.classList.remove('is--hide')
+            }
+          }
+
+
           dataCategory !== category.title || !input.checked ? li.classList.add('is--hide') : li.classList.remove('is--hide')
         })
       }
     } else {
-      if (filterType === 'all')
+      if (filterType === 'all') {
         nodes.forEach(element => {
           const title = element.firstElementChild.lastElementChild.firstElementChild.textContent
           
@@ -368,11 +423,20 @@ export default class View {
 
           element.classList.remove('is--hide')
         })
+      }
 
       if (filterType === 'active') {
         input.forEach(input => {
-          const title = input.parentElement
-          const li = input.parentElement.parentNode.lastElementChild.firstElementChild.textContent
+          const li = input.parentElement.parentNode
+          const title = input.parentNode.lastElementChild.firstElementChild.textContent
+
+          if (searchValue && !input.checked ) {
+            return !title.includes(searchValue) ? li.classList.add('is--hide') : li.classList.remove('is--hide')
+          }
+
+          if (inputSearch.value && !input.checked) {
+            return !title.includes(inputSearch.value) ? li.classList.add('is--hide') : li.classList.remove('is--hide')
+          }
 
           input.checked ? li.classList.add('is--hide') : li.classList.remove('is--hide')
         })
@@ -380,7 +444,17 @@ export default class View {
 
       if (filterType === 'completed') {
         input.forEach(input => {
-          const li = input.parentNode.parentNode
+          const li = input.parentElement.parentNode
+          const title = input.parentNode.lastElementChild.firstElementChild.textContent
+          
+          if (searchValue && input.checked ) {
+            return !title.includes(searchValue) ? li.classList.add('is--hide') : li.classList.remove('is--hide')
+          }
+
+          if (inputSearch.value && input.checked) {
+            return !title.includes(inputSearch.value) ? li.classList.add('is--hide') : li.classList.remove('is--hide')
+          }
+
           !input.checked ? li.classList.add('is--hide') : li.classList.remove('is--hide')
         })
       }
