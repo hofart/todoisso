@@ -56,8 +56,21 @@ export default class View {
     this.#btnAddTask.addEventListener('click', () => {
       const form = document.getElementById('task-editor')
       const { title, content, category } = form
+      const currentFilterType = this.#filterTypes.find(filter => filter.active === true)
 
       if (!title.value.trim()) return false
+
+      if (currentFilterType.param !== 'all') {
+        for (const key of this.#filterTypes) {
+          key.active = false
+        }
+
+        for (const key of this.#categories) {
+          key.active = false
+        }
+
+        this.#filterTypes[0].active = true
+      }
 
       this.#todolist.push({
         title: title.value,
