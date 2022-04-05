@@ -2,7 +2,7 @@
   <p align="center">TodoIsso</p>
 </h1>
 
-> **This is my first project, to study Vanilla JavaScript, this layout is based on [Todoist App](https://todoist.com/app/).**<br />
+> **This is my first project, to study Vanilla JavaScript, this layout is based on [Todoist App](https://todoist.com/app/).
 > If you wanna see this, just click **[here](https://hofart.github.io/todoisso/).**
 
 
