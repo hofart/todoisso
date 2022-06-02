@@ -113,3 +113,8 @@ main {
 .btn--cancel:hover {
   background-color: var(--color-gray-1);
 }
+
+.btn:disabled {
+  background-color: var(--color-gray-1);
+  cursor: no-drop;
+}
